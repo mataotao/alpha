@@ -1,0 +1,7 @@
+/log/*.log
+/log/*.zip
+/log/*.gz
+docker-compose/
+.idea/
+.DS_Store
+/conf/config.yaml

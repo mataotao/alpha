@@ -1,0 +1,35 @@
+runmode: debug                 # 开发模式, debug, release, test
+addr: :8080                  # HTTP绑定端口
+name: alpha              # API Server的名字
+url: http://127.0.0.1:8080   # pingServer函数请求的API服务器的ip:port
+max_ping_count: 10           # pingServer函数try的次数
+jwt_secret: Rtg8BPKNEf2mB4mgvKONGPZZQSaJWNLijxR42qRgq0iBb5
+gormlog: true
+tls:
+  addr: :8081
+  cert: conf/server.crt
+  key: conf/server.key
+log:
+  logger_level: debug
+  logger_file: ./log/alpha.log
+  max_size: 1024
+  max_backups: 30
+  max_age: 7
+db:
+  name: alpha
+  addr: mysql:3306
+  username: root
+  password: root
+  max_open_conns: 100 #最大连接数
+  wet_max_idle_conns: 0 #闲置连接数
+  conn_max_lifetime: 300 #超时时间
+redis:
+  addr: redis:6379
+  pwd: immt
+  db: 6
+kafka:
+  addr:
+    - 192.168.230.142:9092
+server: pre
+limiter:
+  rate: 5000-H
