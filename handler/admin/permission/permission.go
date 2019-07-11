@@ -15,6 +15,9 @@ type DataRequest struct {
 }
 
 type UpdateRequest struct {
-	Id uint64 `json:"id" uri:"id" valid:"required"`
+	Id uint64 `uri:"id" valid:"required"`
 	DataRequest
+}
+type DeleteRequest struct {
+	Id uint64 `uri:"id" valid:"required"`
 }

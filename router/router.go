@@ -26,6 +26,8 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		admin.POST("permission", permission.Create)
 		//修改权限
 		admin.PUT("permission/:id", permission.Update)
+		//删除权限
+		admin.DELETE("permission/:id", permission.Delete)
 	}
 	// The health check handlers
 	svcd := g.Group("/sd")

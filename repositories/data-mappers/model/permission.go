@@ -27,3 +27,8 @@ func (p *PermissionModel) Update() error {
 	//new(PermissionModel) == &PermissionModel{}
 	return DB.Alpha.Model(new(PermissionModel)).Updates(p).Error
 }
+
+///删除
+func (p *PermissionModel) Delete() error {
+	return DB.Alpha.Delete(&p).Error
+}
