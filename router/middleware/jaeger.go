@@ -20,7 +20,7 @@ func Jaeger() gin.HandlerFunc {
 			log.Logger.Error("jaeger InIt",
 				zap.Error(err),
 			)
-			handler.SendBandResponse(c, errno.ErrJaegerInit, nil)
+			handler.SendBadResponse(c, errno.ErrJaegerInit, nil)
 			c.Abort()
 			return
 		}
