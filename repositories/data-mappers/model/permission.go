@@ -21,3 +21,9 @@ func (p *PermissionModel) TableName() string {
 func (p *PermissionModel) Create() error {
 	return DB.Alpha.Create(&p).Error
 }
+
+///修改
+func (p *PermissionModel) Update() error {
+	//new(PermissionModel) == &PermissionModel{}
+	return DB.Alpha.Model(new(PermissionModel)).Updates(p).Error
+}

@@ -23,7 +23,9 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	admin.Use(limiter.TBIP())
 	{
 		//新增权限
-		admin.POST("manager/permission", permission.Create)
+		admin.POST("permission", permission.Create)
+		//修改权限
+		admin.PUT("permission/:id", permission.Update)
 	}
 	// The health check handlers
 	svcd := g.Group("/sd")
