@@ -1,6 +1,7 @@
 package router
 
 import (
+	"alpha/handler/admin/permission"
 	"alpha/handler/sd"
 	"alpha/router/middleware/limiter"
 	"github.com/gin-contrib/pprof"
@@ -18,7 +19,12 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	g.NoRoute(func(c *gin.Context) {
 		c.String(http.StatusNotFound, "The incorrect API route.")
 	})
-
+	admin := g.Group("/admin/")
+	admin.Use(limiter.TBIP())
+	{
+		//新增权限
+		admin.POST("manager/permission", permission.Create)
+	}
 	// The health check handlers
 	svcd := g.Group("/sd")
 	svcd.Use(limiter.TBIP())

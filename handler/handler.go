@@ -30,7 +30,7 @@ func SendResponse(c *gin.Context, err error, data interface{}) {
 	})
 }
 
-func SendBandResponse(c *gin.Context, err error, data interface{}) {
+func SendBadResponse(c *gin.Context, err error, data interface{}) {
 	code, message := errno.DecodeErr(err)
 
 	// always return http.StatusBadRequest
@@ -41,7 +41,7 @@ func SendBandResponse(c *gin.Context, err error, data interface{}) {
 	})
 }
 
-func SendBandResponseErrors(c *gin.Context, err error, data interface{}, Errors map[string]string) {
+func SendBadResponseErrors(c *gin.Context, err error, data interface{}, Errors map[string]string) {
 	code, message := errno.DecodeErr(err)
 
 	// always return http.StatusBadRequest

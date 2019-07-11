@@ -30,6 +30,11 @@ redis:
 kafka:
   addr:
     - 192.168.230.142:9092
+rabbitmq:
+  user: user
+  pwd: user
+  addr: 192.168.230.111
+  port: 5672
 server: pre
 limiter:
   rate: 5000-H
