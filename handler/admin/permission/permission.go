@@ -21,3 +21,6 @@ type UpdateRequest struct {
 type DeleteRequest struct {
 	Id uint64 `uri:"id" valid:"required"`
 }
+type GetRequest struct {
+	Id uint64 `uri:"id" valid:"required"`
+}

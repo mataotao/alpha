@@ -32,3 +32,18 @@ func (p *PermissionModel) Update() error {
 func (p *PermissionModel) Delete() error {
 	return DB.Alpha.Delete(&p).Error
 }
+
+///获取一条
+func (p *PermissionModel) Get(field string) (bool, error) {
+	var isNotFound bool
+	d := DB.Alpha.Select(field).First(&p)
+	if d.RecordNotFound() {
+		isNotFound = true
+		return isNotFound, nil
+	}
+	if err := d.Error; err != nil {
+		return isNotFound, err
+	}
+
+	return isNotFound, nil
+}

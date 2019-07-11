@@ -4,15 +4,15 @@ import (
 	"alpha/config"
 	"alpha/handler"
 	"alpha/pkg/errno"
-	"alpha/repositories/data-mappers/model"
+	service "alpha/services/permission"
 
 	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
-func Delete(c *gin.Context) {
-	var r DeleteRequest
+func Get(c *gin.Context) {
+	var r GetRequest
 	//绑定id  uri方式
 	if err := c.ShouldBindUri(&r); err != nil {
 		handler.SendBadResponse(c, err, nil)
@@ -24,16 +24,16 @@ func Delete(c *gin.Context) {
 		handler.SendBadResponseErrors(c, errno.ErrValidation, nil, errMap)
 		return
 	}
-	p := new(model.PermissionModel)
-	p.Id = r.Id
-	if err := p.Delete(); err != nil {
-		config.Logger.Error("permission delete",
+	info, err := service.Get(r.Id)
+	if err != nil {
+		config.Logger.Error("permission get",
 			zap.Error(err),
 		)
-		//返回错误
+		//错误返回
 		handler.SendBadResponse(c, err, nil)
 		return
 	}
-	//返回成功
-	handler.SendResponse(c, nil, nil)
+	//返回权限数据
+	handler.SendResponse(c, nil, info)
+
 }
