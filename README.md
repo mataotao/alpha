@@ -21,7 +21,7 @@
 * [viper](github.com/spf13/viper) (配置文件)
 * [zap](https://godoc.org/go.uber.org/zap) (log包)
 ## redis
-版本 5.0以上
+版本 5.0以上,如果不用streams可以不用
 ## mysql
 版本 5.7以上
 ```
