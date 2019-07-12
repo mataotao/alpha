@@ -7,7 +7,7 @@ clean:
 #	find . -name "[._]*.s[a-w][a-z]" | xargs -i rm -f {}
 gotool:
 	@gofmt -w .
-	@go tool vet . | grep -v vendor;true
+	@GO111MODULE=on go vet .
 love:
 	@GO111MODULE=on GOPROXY=https://goproxy.io go run -race main.go
 push:
