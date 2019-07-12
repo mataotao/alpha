@@ -11,6 +11,16 @@ type PermissionModel struct {
 	Cond          string `json:"cond"`
 	Icon          string `json:"icon"`
 }
+type PermissionListInfo struct {
+	Id            uint64                `json:"id"`
+	Label         string                `json:"label" `
+	IsContainMenu uint8                 `json:"is_contain_menu" `
+	Pid           uint64                `json:"pid" `
+	Level         uint8                 `json:"level" `
+	Url           string                `json:"url" `
+	Sort          uint64                `json:"sort" `
+	Children      []*PermissionListInfo `json:"children"`
+}
 
 //表名
 func (p *PermissionModel) TableName() string {
@@ -59,4 +69,23 @@ func (p *PermissionModel) List(field string, ids []uint64) ([]*PermissionModel, 
 		return list, err
 	}
 	return list, nil
+}
+func (p *PermissionModel) RecursivePermission(pid uint64, plist []*PermissionModel) []*PermissionListInfo {
+	list := make([]*PermissionListInfo, 0)
+	for i := range plist[:] {
+		if pid == plist[i].Pid {
+			cList := &PermissionListInfo{
+				Id:            plist[i].Id,
+				Label:         plist[i].Label,
+				IsContainMenu: plist[i].IsContainMenu,
+				Pid:           plist[i].Pid,
+				Level:         plist[i].Level,
+				Url:           plist[i].Url,
+				Sort:          plist[i].Sort,
+			}
+			cList.Children = p.RecursivePermission(plist[i].Id, plist)
+			list = append(list, cList)
+		}
+	}
+	return list
 }
