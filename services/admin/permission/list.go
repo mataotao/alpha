@@ -11,7 +11,7 @@ func List() ([]*model.PermissionListInfo, error) {
 	//TODO 用户权限过滤
 	//获取权限列表
 	p := new(model.PermissionModel)
-	plist, err := p.List("*", []uint64{})
+	plist, err := p.AllByIds("*", []uint64{})
 	if err != nil {
 		config.Logger.Error("permission get",
 			zap.Error(err),

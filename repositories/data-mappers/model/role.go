@@ -16,6 +16,7 @@ type RoleInfo struct {
 	Description string `json:"description"`
 	Permission  []int  `json:"permission"`
 }
+
 func (r *RoleModel) TableName() string {
 	return "role"
 }
@@ -79,7 +80,7 @@ func (r *RoleModel) Update(p []int) error {
 
 }
 
-func  (r *RoleModel) Get(field string) (bool, error) {
+func (r *RoleModel) Get(field string) (bool, error) {
 	var isNotFound bool
 	d := DB.Alpha.Select(field).First(&r)
 	if d.RecordNotFound() {

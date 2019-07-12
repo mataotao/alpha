@@ -4,23 +4,44 @@ import (
 	"alpha/config"
 	roleDomain "alpha/domain/entity/admin/role"
 	"alpha/pkg/errno"
-	"fmt"
-
+	"alpha/repositories/data-mappers/model"
 	"go.uber.org/zap"
 )
 
-func Get(id uint64) (bool, error) {
+type Info struct {
+	Id           uint64   `json:"id"`
+	Name         string   `json:"name"`
+	Description  string   `json:"description"`
+	PermissionId []uint64 `json:"permission_id"`
+}
+
+func Get(id uint64) (*Info, error) {
+	info := new(Info)
 	roleEntity := roleDomain.NewEntity(id)
 	isNotFound, err := roleEntity.Info()
 	if err != nil {
 		config.Logger.Error("permission get",
 			zap.Error(err),
 		)
-		return false, err
+		return info, err
 	}
 	if isNotFound {
-		return false, errno.ErrDBNotFoundRecord
+		return info, errno.ErrDBNotFoundRecord
 	}
-	fmt.Printf("%+v", roleEntity)
-	return false, nil
+	rp := new(model.RolePermissionModel)
+	rp.RoleId = id
+	permissionList, err := rp.All("*")
+	if err != nil {
+		config.Logger.Error("permission get",
+			zap.Error(err),
+		)
+		return info, err
+	}
+
+	info.Id = roleEntity.Id
+	info.Name = roleEntity.Name
+	info.Description = roleEntity.Description
+	info.PermissionId = rp.PermissionIds(permissionList)
+
+	return info, nil
 }

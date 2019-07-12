@@ -58,12 +58,21 @@ func (p *PermissionModel) Get(field string) (bool, error) {
 	return isNotFound, nil
 }
 
-func (p *PermissionModel) List(field string, ids []uint64) ([]*PermissionModel, error) {
+func (p *PermissionModel) AllByIds(field string, ids []uint64) ([]*PermissionModel, error) {
 	list := make([]*PermissionModel, 0)
 	db := DB.Alpha.Select(field).Order("pid asc,sort desc,id asc")
 	if len(ids) != 0 {
 		db = db.Where("id in (?)", ids)
 	}
+	//查询数据
+	if err := db.Find(&list).Error; err != nil {
+		return list, err
+	}
+	return list, nil
+}
+func (p *PermissionModel) All(field string) ([]*PermissionModel, error) {
+	list := make([]*PermissionModel, 0)
+	db := DB.Alpha.Select(field)
 	//查询数据
 	if err := db.Find(&list).Error; err != nil {
 		return list, err
