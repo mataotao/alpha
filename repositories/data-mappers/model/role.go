@@ -51,3 +51,25 @@ func (r *RoleModel) Delete() error {
 	tx.Commit()
 	return nil
 }
+func (r *RoleModel) Update(p []int) error {
+	tx := DB.Alpha.Begin()
+	if err := tx.Model(&r).Updates(r).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	if err := tx.Where("role_id = ?", r.Id).Delete(RolePermissionModel{}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	var valueSql strings.Builder
+	for i := range p[:] {
+		valueSql.WriteString(fmt.Sprintf("(%d,%d),", r.Id, p[i]))
+	}
+	sql := fmt.Sprintf(`INSERT INTO %s (role_id,permission_id) VALUES %s`, new(RolePermissionModel).TableName(), strings.TrimSuffix(valueSql.String(), ","))
+	if err := tx.Exec(sql).Error; err != nil {
+		return err
+	}
+	tx.Commit()
+	return nil
+
+}
