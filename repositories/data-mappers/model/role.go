@@ -10,7 +10,12 @@ type RoleModel struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 }
-
+type RoleInfo struct {
+	Id          uint64 `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Permission  []int  `json:"permission"`
+}
 func (r *RoleModel) TableName() string {
 	return "role"
 }
@@ -72,4 +77,18 @@ func (r *RoleModel) Update(p []int) error {
 	tx.Commit()
 	return nil
 
+}
+
+func  (r *RoleModel) Get(field string) (bool, error) {
+	var isNotFound bool
+	d := DB.Alpha.Select(field).First(&r)
+	if d.RecordNotFound() {
+		isNotFound = true
+		return isNotFound, nil
+	}
+	if err := d.Error; err != nil {
+		return isNotFound, err
+	}
+
+	return isNotFound, nil
 }

@@ -1,10 +1,10 @@
-package permission
+package role
 
 import (
 	"alpha/config"
 	"alpha/handler"
 	"alpha/pkg/errno"
-	service "alpha/services/admin/permission"
+	service "alpha/services/admin/role"
 
 	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
@@ -24,16 +24,15 @@ func Get(c *gin.Context) {
 		handler.SendBadResponseErrors(c, errno.ErrValidation, nil, errMap)
 		return
 	}
+
 	info, err := service.Get(r.Id)
 	if err != nil {
-		config.Logger.Error("permission get",
+		config.Logger.Error("role get",
 			zap.Error(err),
 		)
-		//错误返回
 		handler.SendBadResponse(c, err, nil)
 		return
 	}
-	//返回权限数据
 	handler.SendResponse(c, nil, info)
 
 }

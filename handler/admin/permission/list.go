@@ -3,7 +3,7 @@ package permission
 import (
 	"alpha/config"
 	"alpha/handler"
-	service "alpha/services/permission"
+	service "alpha/services/admin/permission"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
