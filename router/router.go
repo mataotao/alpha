@@ -38,6 +38,8 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 
 		//新增角色
 		admin.POST("role", role.Create)
+		//删除角色
+		admin.DELETE("role/:id", role.Delete)
 	}
 	// The health check handlers
 	svcd := g.Group("/sd")

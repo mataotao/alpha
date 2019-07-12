@@ -36,3 +36,18 @@ func (r *RoleModel) Create(p []int) error {
 	tx.Commit()
 	return nil
 }
+
+func (r *RoleModel) Delete() error {
+	//开启事务
+	tx := DB.Alpha.Begin()
+	if err := tx.Delete(&r).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	if err := tx.Where("role_id = ?", r.Id).Delete(RolePermissionModel{}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	tx.Commit()
+	return nil
+}
