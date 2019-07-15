@@ -3,11 +3,14 @@ package router
 import (
 	"alpha/handler/admin/permission"
 	"alpha/handler/admin/role"
+	"alpha/handler/admin/user"
 	"alpha/handler/sd"
 	"alpha/router/middleware"
 	"alpha/router/middleware/limiter"
+
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
+
 	"net/http"
 )
 
@@ -46,6 +49,9 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		admin.GET("role/:id", role.Get)
 		//获取角色列表
 		admin.GET("role", role.List)
+
+		//新增用户
+		admin.POST("user", user.Create)
 	}
 	// The health check handlers
 	svcd := g.Group("/sd")
