@@ -18,3 +18,8 @@ type Data struct {
 	Description string `json:"description" valid:"stringlength(1|500)~url最大长度500"`
 	Permission  []int  `json:"permission" valid:"required"`
 }
+type ListRequest struct {
+	Page  uint64 `form:"page"`
+	Name  string `form:"name"`
+	Limit uint64 `form:"limit"`
+}

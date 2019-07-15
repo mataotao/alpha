@@ -1,6 +1,8 @@
 package model
 
 import (
+	"alpha/pkg/constvar"
+
 	"fmt"
 	"strings"
 )
@@ -92,4 +94,29 @@ func (r *RoleModel) Get(field string) (bool, error) {
 	}
 
 	return isNotFound, nil
+}
+func (r *RoleModel) List(field string, page uint64, limit uint64) ([]*RoleModel, uint64, error) {
+	if limit == 0 {
+		limit = constvar.DefaultLimit
+	}
+	if page == 0 {
+		page = constvar.DefaultPage
+	}
+	start := (page - 1) * limit
+	var count uint64
+	list := make([]*RoleModel, 0)
+	db := DB.Alpha.Select(field)
+	if r.Name != "" {
+		db = db.Where(fmt.Sprintf("name like '%%%s%%'", r.Name))
+	}
+
+	if err := db.Model(&RoleModel{}).Count(&count).Error; err != nil {
+		return list, count, err
+	}
+
+	if err := db.Offset(start).Limit(limit).Order("id desc").Find(&list).Error; err != nil {
+		return list, count, err
+	}
+	return list, count, nil
+
 }

@@ -20,7 +20,7 @@ func Get(id uint64) (*Info, error) {
 	roleEntity := roleDomain.NewEntity(id)
 	isNotFound, err := roleEntity.Info()
 	if err != nil {
-		config.Logger.Error("permission get",
+		config.Logger.Error("role get",
 			zap.Error(err),
 		)
 		return info, err
@@ -32,7 +32,7 @@ func Get(id uint64) (*Info, error) {
 	rp.RoleId = id
 	permissionList, err := rp.All("*")
 	if err != nil {
-		config.Logger.Error("permission get",
+		config.Logger.Error("role get",
 			zap.Error(err),
 		)
 		return info, err
