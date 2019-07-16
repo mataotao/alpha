@@ -3,8 +3,18 @@ package user
 import (
 	"alpha/domain/entity"
 	"alpha/pkg/auth"
+	redis "alpha/repositories/data-mappers/go-redis"
 	"alpha/repositories/data-mappers/model"
 	sliceUtil "alpha/repositories/util/slice"
+	"fmt"
+)
+
+const (
+	PermissionKey = "alpha:user:permission:%d"
+)
+const (
+	PermissionOff = iota
+	PermissionOn
 )
 
 type Entity struct {
@@ -26,7 +36,7 @@ func (e *Entity) Create(roleIds []uint64) error {
 //检查用户名唯一
 func (e *Entity) Unique() (bool, error) {
 	if e.UserModel.Username == "" {
-		panic("请传入username")
+		panic("username为空")
 	}
 	notFound, err := (&e.UserModel).Get("id")
 	if err != nil {
@@ -79,7 +89,7 @@ func (e *Entity) IsRoot() bool {
 func (e *Entity) GetRoleIds() ([]uint64, error) {
 	var ids []uint64
 	if e.UserModel.Id == 0 {
-		panic("请传入id")
+		panic("id为空")
 	}
 	userRoleModel := &model.UserRoleModel{
 		UserId: e.UserModel.Id,
@@ -106,7 +116,25 @@ func (e *Entity) GetPermissionIds(roleIds []uint64) ([]uint64, error) {
 	e.PermissionIds = ids
 	return ids, nil
 }
-
+func (e *Entity) SetPermissionToCache() error {
+	if e.UserModel.Id == 0 {
+		panic("id为空")
+	}
+	if len(e.PermissionIds) == 0 {
+		panic("permission_ids为空")
+	}
+	k := fmt.Sprintf(PermissionKey, e.UserModel.Id)
+	pipe := redis.Client.Client.TxPipeline()
+	pipe.Del(k)
+	for i := range e.PermissionIds[:] {
+		pipe.SetBit(k, int64(e.PermissionIds[i]), PermissionOn)
+	}
+	_, err := pipe.Exec()
+	if err != nil {
+		return err
+	}
+	return nil
+}
 func NewEntity(id uint64) *Entity {
 	e := new(Entity)
 	e.Entity.SetId(id)

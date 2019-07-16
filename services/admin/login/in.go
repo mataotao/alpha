@@ -7,8 +7,6 @@ import (
 	userService "alpha/services/admin/user"
 
 	"go.uber.org/zap"
-
-	"fmt"
 )
 
 func In(username, pwd, ip string) (bool, error) {
@@ -35,14 +33,19 @@ func In(username, pwd, ip string) (bool, error) {
 		return false, errno.ErrUserFreeze
 	}
 	//获取权限id
-	permissionIds, err := userService.PermissionIds(userEntity)
-	if err != nil {
+	if _, err := userService.PermissionIds(userEntity); err != nil {
+		config.Logger.Error("login in",
+			zap.Error(err),
+		)
+		return false, err
+	}
+	//权限id写入redis 位图
+	if err := userEntity.SetPermissionToCache(); err != nil {
 		config.Logger.Error("login in",
 			zap.Error(err),
 		)
 		return false, err
 	}
 
-	fmt.Println(permissionIds)
 	return false, nil
 }
