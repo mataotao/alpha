@@ -1,7 +1,6 @@
 package model
 
 import (
-	"alpha/pkg/auth"
 	"fmt"
 	"strings"
 	"time"
@@ -48,11 +47,6 @@ func (u *UserModel) Get(field string) (bool, error) {
 		return notFound, err
 	}
 	return notFound, nil
-}
-
-func (u *UserModel) Encrypt() (err error) {
-	u.Password, err = auth.Encrypt(u.Password)
-	return
 }
 
 func (u *UserModel) Create(roleIds []uint64) error {

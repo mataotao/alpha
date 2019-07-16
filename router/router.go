@@ -1,6 +1,7 @@
 package router
 
 import (
+	"alpha/handler/admin/login"
 	"alpha/handler/admin/permission"
 	"alpha/handler/admin/role"
 	"alpha/handler/admin/user"
@@ -19,14 +20,16 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	// Middlewares.
 	g.Use(gin.Recovery())
 	g.Use(mw...)
+	g.Use(middleware.RequestId())
+	g.Use(limiter.TBIP())
 	pprof.Register(g)
 	// 404 Handler.
 	g.NoRoute(func(c *gin.Context) {
 		c.String(http.StatusNotFound, "The incorrect API route.")
 	})
+	g.POST("/login", login.In)
+
 	admin := g.Group("/admin/")
-	admin.Use(middleware.RequestId())
-	admin.Use(limiter.TBIP())
 	{
 		//新增权限
 		admin.POST("permission", permission.Create)

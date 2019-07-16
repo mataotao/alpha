@@ -24,14 +24,14 @@ func Create(user *model.UserModel, roleIds []uint64) error {
 		return errno.ErrUserNameNotUnique
 	}
 	//加密密码
-	if err := userEntity.UserModel.Encrypt(); err != nil {
+	if err := userEntity.Encrypt(); err != nil {
 		config.Logger.Error("user create",
 			zap.Error(err),
 		)
 		return err
 
 	}
-	if err := userEntity.UserModel.Create(roleIds); err != nil {
+	if err := userEntity.Create(roleIds); err != nil {
 		config.Logger.Error("user create",
 			zap.Error(err),
 		)

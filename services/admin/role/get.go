@@ -18,14 +18,14 @@ type Info struct {
 func Get(id uint64) (*Info, error) {
 	info := new(Info)
 	roleEntity := roleDomain.NewEntity(id)
-	isNotFound, err := roleEntity.Info()
+	notFound, err := roleEntity.Info()
 	if err != nil {
 		config.Logger.Error("role get",
 			zap.Error(err),
 		)
 		return info, err
 	}
-	if isNotFound {
+	if notFound {
 		return info, errno.ErrDBNotFoundRecord
 	}
 	rp := new(model.RolePermissionModel)
