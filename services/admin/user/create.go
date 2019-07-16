@@ -39,3 +39,35 @@ func Create(user *model.UserModel, roleIds []uint64) error {
 	}
 	return nil
 }
+
+//用户拥有的权限
+func PermissionIds(userEntity *userDomain.Entity) ([]uint64, error) {
+	ids := make([]uint64, 0)
+	if userEntity.IsRoot() {
+		permissionModel := new(model.PermissionModel)
+		plist, err := permissionModel.All("id")
+		if err != nil {
+			config.Logger.Error("user user_permission_ids",
+				zap.Error(err),
+			)
+			return ids, err
+		}
+		ids = permissionModel.Ids(plist)
+	} else {
+		_, err := userEntity.GetRoleIds()
+		if err != nil {
+			config.Logger.Error("user user_permission_ids",
+				zap.Error(err),
+			)
+			return ids, err
+		}
+		ids, err = userEntity.GetPermissionIds(userEntity.RoleIds)
+		if err != nil {
+			config.Logger.Error("user user_permission_ids",
+				zap.Error(err),
+			)
+			return ids, err
+		}
+	}
+	return ids, nil
+}

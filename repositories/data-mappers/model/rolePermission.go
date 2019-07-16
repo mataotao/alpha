@@ -28,3 +28,15 @@ func (rp *RolePermissionModel) PermissionIds(list []*RolePermissionModel) []uint
 	}
 	return permissionIds
 }
+func (rp *RolePermissionModel) AllByRoleIds(field string, roleIds []uint64) ([]*RolePermissionModel, error) {
+	list := make([]*RolePermissionModel, 0)
+	db := DB.Alpha.Select(field)
+	if len(roleIds) != 0 {
+		db = db.Where("role_id in(?)", roleIds)
+	}
+	//查询数据
+	if err := db.Find(&list).Error; err != nil {
+		return list, err
+	}
+	return list, nil
+}

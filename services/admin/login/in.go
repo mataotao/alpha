@@ -3,8 +3,8 @@ package login
 import (
 	"alpha/config"
 	userDomain "alpha/domain/entity/admin/user"
-	"alpha/pkg/auth"
 	"alpha/pkg/errno"
+	userService "alpha/services/admin/user"
 
 	"go.uber.org/zap"
 
@@ -24,16 +24,25 @@ func In(username, pwd, ip string) (bool, error) {
 		return false, errno.ErrDBNotFoundRecord
 	}
 	//检测密码
-	if err := auth.Compare(userEntity.UserModel.Password, pwd); err != nil {
+	if err := userEntity.Compare(pwd); err != nil {
 		config.Logger.Error("login in",
 			zap.Error(err),
 		)
 		return false, errno.ErrUserNameOrPassword
 	}
+	//检测用户冻结
 	if userEntity.IsFreeze() {
-		return false, errno.UserFreeze
+		return false, errno.ErrUserFreeze
+	}
+	//获取权限id
+	permissionIds, err := userService.PermissionIds(userEntity)
+	if err != nil {
+		config.Logger.Error("login in",
+			zap.Error(err),
+		)
+		return false, err
 	}
 
-	fmt.Println(userEntity)
+	fmt.Println(permissionIds)
 	return false, nil
 }

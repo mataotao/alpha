@@ -98,3 +98,10 @@ func (p *PermissionModel) RecursivePermission(pid uint64, plist []*PermissionMod
 	}
 	return list
 }
+func (p *PermissionModel) Ids(list []*PermissionModel) []uint64 {
+	ids := make([]uint64, 0, len(list))
+	for i := range list[:] {
+		ids = append(ids, list[i].Id)
+	}
+	return ids
+}
