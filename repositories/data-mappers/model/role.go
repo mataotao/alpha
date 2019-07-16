@@ -83,17 +83,17 @@ func (r *RoleModel) Update(p []int) error {
 }
 
 func (r *RoleModel) Get(field string) (bool, error) {
-	var isNotFound bool
+	var notFound bool
 	d := DB.Alpha.Select(field).First(&r)
 	if d.RecordNotFound() {
-		isNotFound = true
-		return isNotFound, nil
+		notFound = true
+		return notFound, nil
 	}
 	if err := d.Error; err != nil {
-		return isNotFound, err
+		return notFound, err
 	}
 
-	return isNotFound, nil
+	return notFound, nil
 }
 func (r *RoleModel) List(field string, page uint64, limit uint64) ([]*RoleModel, uint64, error) {
 	if limit == 0 {

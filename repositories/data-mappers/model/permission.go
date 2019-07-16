@@ -45,17 +45,17 @@ func (p *PermissionModel) Delete() error {
 
 ///获取一条
 func (p *PermissionModel) Get(field string) (bool, error) {
-	var isNotFound bool
+	var notFound bool
 	d := DB.Alpha.Select(field).First(&p)
 	if d.RecordNotFound() {
-		isNotFound = true
-		return isNotFound, nil
+		notFound = true
+		return notFound, nil
 	}
 	if err := d.Error; err != nil {
-		return isNotFound, err
+		return notFound, err
 	}
 
-	return isNotFound, nil
+	return notFound, nil
 }
 
 func (p *PermissionModel) AllByIds(field string, ids []uint64) ([]*PermissionModel, error) {

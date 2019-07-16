@@ -29,14 +29,27 @@ func (u *UserModel) TableName() string {
 	return "user"
 }
 
-func (u *UserModel) Unique() bool {
-	user := &UserModel{}
-	err := DB.Alpha.Where("username = ?", u.Username).First(&user).Error
-	if err != nil {
-		return true
+func (u *UserModel) Get(field string) (bool, error) {
+	var notFound bool
+	db := DB.Alpha.Select(field)
+	if u.Id != 0 {
+		db = db.Where("id = ?", u.Id)
 	}
-	return false
+	if u.Username != "" {
+		db = db.Where("username = ?", u.Username)
+	}
+	d := db.First(&u)
+
+	if d.RecordNotFound() {
+		notFound = true
+		return notFound, nil
+	}
+	if err := d.Error; err != nil {
+		return notFound, err
+	}
+	return notFound, nil
 }
+
 func (u *UserModel) Encrypt() (err error) {
 	u.Password, err = auth.Encrypt(u.Password)
 	return

@@ -20,11 +20,18 @@ func (e *Entity) Create(roleIds []uint64) error {
 }
 
 //检查用户名唯一
-func (e *Entity) Unique() bool {
+func (e *Entity) Unique() (bool, error) {
 	if e.UserModel.Username == "" {
-		return false
+		return false, nil
 	}
-	return e.UserModel.Unique()
+	notFound, err := e.UserModel.Get("id")
+	if err != nil {
+		return false, err
+	}
+	if notFound == false {
+		return false, nil
+	}
+	return true, nil
 }
 
 //加密
