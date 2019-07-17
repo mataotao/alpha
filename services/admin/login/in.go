@@ -24,7 +24,7 @@ func In(username, pwd, ip string) (*InResponse, error) {
 		)
 		return inResponse, err
 	}
-	if notfound == true {
+	if notfound {
 		return inResponse, errno.ErrDBNotFoundRecord
 	}
 	//检测密码

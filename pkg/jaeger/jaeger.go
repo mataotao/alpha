@@ -37,7 +37,11 @@ func (t *RequestTrace) Init() error {
 
 	ancestorSpanContext, err := tracer.Extract(
 		opentracing.HTTPHeaders,
-		opentracing.HTTPHeadersCarrier(t.Request.Header))
+		opentracing.HTTPHeadersCarrier(t.Request.Header),
+	)
+	if err != nil {
+		return err
+	}
 	if t.OperationName == "" {
 		routeSlice := strings.Split(t.Request.RequestURI, "?")
 		t.OperationName = routeSlice[0]

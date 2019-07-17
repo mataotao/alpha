@@ -75,6 +75,9 @@ func XReadGroupAck(group, consumer, id string, key []string, count, block int64)
 			return data, err
 		}
 		keyValues, err := redisgo.Values(keyGroup[1], nil)
+		if err != nil {
+			return data, err
+		}
 		for v := range keyValues[:] {
 			idLevel, err := redisgo.Values(keyValues[v], nil)
 			if err != nil {

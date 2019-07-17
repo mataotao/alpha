@@ -45,7 +45,7 @@ func (e *Entity) Unique() (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	if notFound == false {
+	if !notFound {
 		return false, nil
 	}
 	return true, nil

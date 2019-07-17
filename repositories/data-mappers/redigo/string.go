@@ -10,7 +10,7 @@ lockType true 加锁 false 解锁
 func Lock(key string, lockType bool, t int) (bool, error) {
 	pool := Pool.Pool.Get()
 	defer pool.Close()
-	if lockType == true {
+	if lockType {
 		lockRes, err := pool.Do("SET", key, true, "EX", t, "NX")
 		if err != nil {
 			return false, err

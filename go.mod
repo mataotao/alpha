@@ -4,7 +4,7 @@ require (
 	cloud.google.com/go v0.39.0 // indirect
 	github.com/DataDog/zstd v1.4.0 // indirect
 	github.com/OneOfOne/xxhash v1.2.5 // indirect
-	github.com/Shopify/sarama v1.22.1 // indirect
+	github.com/Shopify/sarama v1.22.1
 	github.com/asaskevich/govalidator v0.0.0-20190424111038-f61b66f89f4a
 	github.com/astaxie/beego v1.11.1 // indirect
 	github.com/bradfitz/gomemcache v0.0.0-20190329173943-551aad21a668 // indirect
@@ -64,6 +64,7 @@ require (
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.3
 	github.com/spf13/viper v1.4.0
+	github.com/streadway/amqp v0.0.0-20190404075320-75d898a42a94
 	github.com/stretchr/objx v0.2.0 // indirect
 	github.com/syndtr/goleveldb v1.0.0 // indirect
 	github.com/uber/jaeger-client-go v2.16.0+incompatible

@@ -55,27 +55,6 @@ func RemoveDuplicateElementint(s []int) []int {
 	return result
 }
 
-//转换成二维数组
-func SplitStringNum(s []string, splitNum int) [][]string {
-	slice := make([][]string, 0)
-	var start int
-	l := len(s)
-	end := splitNum
-	for start < l {
-		if n := l - start; n < end {
-			end = l
-		}
-		subS := make([]string, 0)
-		for _, v := range s[start:end] {
-			subS = append(subS, v)
-		}
-		slice = append(slice, subS)
-		start += splitNum
-		end += splitNum
-	}
-	return slice
-}
-
 //并集 返回 sSort 在s里的 并且按sSort本身的顺序返回
 func IntersectionString(sSort, s []string) []string {
 	m := make(map[string]struct{})
@@ -84,7 +63,7 @@ func IntersectionString(sSort, s []string) []string {
 		m[s[i]] = struct{}{}
 	}
 	for i := range sSort[:] {
-		if _, ok := m[sSort[i]]; ok == true {
+		if _, ok := m[sSort[i]]; ok  {
 			filterS = append(filterS, sSort[i])
 		}
 	}

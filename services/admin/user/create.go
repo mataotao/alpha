@@ -20,7 +20,7 @@ func Create(user *model.UserModel, roleIds []uint64) error {
 		)
 		return err
 	}
-	if unique == false {
+	if !unique {
 		return errno.ErrUserNameNotUnique
 	}
 	//加密密码
