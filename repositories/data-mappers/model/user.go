@@ -8,7 +8,7 @@ import (
 
 const (
 	ON     byte = iota + 1
-	FREEZE      //冻结
+	FREEZE  //冻结
 )
 
 type UserModel struct {
@@ -69,4 +69,7 @@ func (u *UserModel) Create(roleIds []uint64) error {
 	tx.Commit()
 	return nil
 
+}
+func (u *UserModel) Updates(data map[string]interface{}) error {
+	return DB.Alpha.Model(&UserModel{}).Where("id = ?", u.Id).Updates(data).Error
 }

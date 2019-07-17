@@ -3,10 +3,13 @@ package user
 import (
 	"alpha/domain/entity"
 	"alpha/pkg/auth"
+	"alpha/pkg/token"
 	redis "alpha/repositories/data-mappers/go-redis"
 	"alpha/repositories/data-mappers/model"
 	sliceUtil "alpha/repositories/util/slice"
+
 	"fmt"
+	"time"
 )
 
 const (
@@ -116,6 +119,8 @@ func (e *Entity) GetPermissionIds(roleIds []uint64) ([]uint64, error) {
 	e.PermissionIds = ids
 	return ids, nil
 }
+
+//存入权限到缓存
 func (e *Entity) SetPermissionToCache() error {
 	if e.UserModel.Id == 0 {
 		panic("id为空")
@@ -135,6 +140,28 @@ func (e *Entity) SetPermissionToCache() error {
 	}
 	return nil
 }
+
+//更新登录信息
+func (e *Entity) UpdateLogin() error {
+	data := make(map[string]interface{})
+	data["last_ip"] = e.UserModel.LastIp
+	data["last_time"] = time.Now()
+	err := (&e.UserModel).Updates(data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+//生成登录token
+func (e *Entity) TokenSign() (string, error) {
+	t, err := token.Sign(token.Context{ID: e.UserModel.Id, Username: e.UserModel.Username}, "")
+	if err != nil {
+		return t, err
+	}
+	return t, nil
+}
+
 func NewEntity(id uint64) *Entity {
 	e := new(Entity)
 	e.Entity.SetId(id)
