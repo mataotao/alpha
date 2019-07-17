@@ -63,7 +63,7 @@ func IntersectionString(sSort, s []string) []string {
 		m[s[i]] = struct{}{}
 	}
 	for i := range sSort[:] {
-		if _, ok := m[sSort[i]]; ok  {
+		if _, ok := m[sSort[i]]; ok {
 			filterS = append(filterS, sSort[i])
 		}
 	}
