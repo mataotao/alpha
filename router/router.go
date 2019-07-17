@@ -30,6 +30,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	g.POST("/login", login.In)
 
 	admin := g.Group("/admin/")
+	admin.Use(middleware.AuthMiddleware())
 	{
 		//新增权限
 		admin.POST("permission", permission.Create)

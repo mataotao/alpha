@@ -15,8 +15,9 @@ var (
 	ErrToken            = &Errno{Code: 20003, Message: ""}
 	ErrJaegerInit       = &Errno{Code: 20004, Message: "jaeger init error"}
 	ErrDBNotFoundRecord = &Errno{Code: 20005, Message: "没有找到该数据"}
+	ErrTokenInvalid     = &Errno{Code: 20106, Message: "TOKEN无效"}
 
 	ErrUserNameNotUnique  = &Errno{Code: 30001, Message: "用户名已存在"}
 	ErrUserNameOrPassword = &Errno{Code: 30002, Message: "用户名或密码错误"}
-	ErrUserFreeze         = &Errno{Code: 30002, Message: "该用户已冻结"}
+	ErrUserFreeze         = &Errno{Code: 30003, Message: "该用户已冻结"}
 )
