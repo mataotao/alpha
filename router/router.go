@@ -5,6 +5,7 @@ import (
 	"alpha/handler/admin/permission"
 	"alpha/handler/admin/role"
 	"alpha/handler/admin/user"
+	"alpha/handler/global/cache"
 	"alpha/handler/sd"
 	"alpha/router/middleware"
 	"alpha/router/middleware/limiter"
@@ -28,6 +29,11 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		c.String(http.StatusNotFound, "The incorrect API route.")
 	})
 	g.POST("/login", login.In)
+
+	global := g.Group("/global")
+	{
+		global.GET("cache/permission", cache.Permission)
+	}
 
 	admin := g.Group("/admin/")
 	admin.Use(middleware.AuthMiddleware())

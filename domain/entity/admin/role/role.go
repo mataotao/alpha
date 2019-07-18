@@ -10,10 +10,10 @@ type Entity struct {
 	model.RoleModel
 }
 
-func (e *Entity) Info() (bool, error) {
+func (e *Entity) Info(field string) (bool, error) {
 	var m model.RoleModel
 	m.Id = e.Entity.GetId()
-	isNotFound, err := m.Get("*")
+	isNotFound, err := m.Get(field)
 	if err != nil {
 		return isNotFound, err
 	}
@@ -22,6 +22,6 @@ func (e *Entity) Info() (bool, error) {
 }
 func NewEntity(id uint64) *Entity {
 	e := new(Entity)
-	e.Entity.SetId(id)
+	(&e.Entity).SetId(id)
 	return e
 }

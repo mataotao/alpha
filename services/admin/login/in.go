@@ -17,7 +17,7 @@ type InResponse struct {
 func In(username, pwd, ip string) (*InResponse, error) {
 	inResponse := new(InResponse)
 	userEntity := userDomain.NewEntityS(username)
-	notfound, err := userEntity.Get()
+	notfound, err := userEntity.Get("*")
 	if err != nil {
 		config.Logger.Error("login in",
 			zap.Error(err),

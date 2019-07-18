@@ -32,7 +32,7 @@ func (e *Entity) Create(roleIds []uint64) error {
 	if err := (&e.UserModel).Create(roleIds); err != nil {
 		return err
 	}
-	e.Entity.SetId(e.UserModel.Id)
+	(&e.Entity).SetId(e.UserModel.Id)
 	return nil
 }
 
@@ -58,14 +58,14 @@ func (e *Entity) Encrypt() (err error) {
 }
 
 //获取信息
-func (e *Entity) Get() (bool, error) {
-	if id := e.Entity.GetId(); id != 0 {
+func (e *Entity) Get(field string) (bool, error) {
+	if id := (&e.Entity).GetId(); id != 0 {
 		e.UserModel.Id = id
 	}
-	if sid := e.Entity.GetSId(); sid != "" {
+	if sid := (&e.Entity).GetSId(); sid != "" {
 		e.UserModel.Username = sid
 	}
-	notFound, err := (&e.UserModel).Get("*")
+	notFound, err := (&e.UserModel).Get(field)
 	if err != nil {
 		return notFound, err
 	}
@@ -164,12 +164,12 @@ func (e *Entity) TokenSign() (string, error) {
 
 func NewEntity(id uint64) *Entity {
 	e := new(Entity)
-	e.Entity.SetId(id)
+	(&e.Entity).SetId(id)
 	return e
 }
 
 func NewEntityS(sid string) *Entity {
 	e := new(Entity)
-	e.Entity.SetSId(sid)
+	(&e.Entity).SetSId(sid)
 	return e
 }

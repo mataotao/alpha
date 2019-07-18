@@ -18,7 +18,7 @@ type Info struct {
 func Get(id uint64) (*Info, error) {
 	info := new(Info)
 	roleEntity := roleDomain.NewEntity(id)
-	notFound, err := roleEntity.Info()
+	notFound, err := roleEntity.Info("*")
 	if err != nil {
 		config.Logger.Error("role get",
 			zap.Error(err),
