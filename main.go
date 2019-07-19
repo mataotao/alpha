@@ -2,18 +2,16 @@ package main
 
 import (
 	"alpha/config"
-	v "alpha/pkg/version"
 	redis "alpha/repositories/data-mappers/go-redis"
 	"alpha/repositories/data-mappers/model"
 	"alpha/router"
-	"context"
-	"errors"
-	"fmt"
+
 	"github.com/gin-gonic/gin"
-	jsoniter "github.com/json-iterator/go"
-	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
+
+	"context"
+	"errors"
 	"net/http"
 	_ "net/http/pprof"
 	"os"
@@ -22,30 +20,7 @@ import (
 	"time"
 )
 
-var (
-	cfg     = pflag.StringP("config", "c", "", "alpha config file path.")
-	version = pflag.BoolP("version", "v", false, "show version info.")
-)
-
 func main() {
-	json := jsoniter.ConfigCompatibleWithStandardLibrary
-	pflag.Parse()
-	if *version {
-		v := v.Get()
-		marshalled, err := json.MarshalIndent(&v, "", "  ")
-		if err != nil {
-			fmt.Printf("%v\n", err)
-			os.Exit(1)
-		}
-
-		fmt.Println(string(marshalled))
-		return
-	}
-
-	// init config
-	if err := config.Init(*cfg); err != nil {
-		panic(err)
-	}
 
 	gin.DebugPrintRouteFunc = func(httpMethod, absolutePath, handlerName string, nuHandlers int) {
 		config.Logger.Info("endpoint",
@@ -57,11 +32,7 @@ func main() {
 	}
 
 	// init db
-	model.DB.Init()
 	defer model.DB.Close()
-
-	//init redis
-	redis.Client.Init()
 	defer redis.Client.Close()
 	// Set gin mode.
 	gin.SetMode(viper.GetString("runmode"))

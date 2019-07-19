@@ -18,6 +18,10 @@ type Database struct {
 
 var DB *Database
 
+func init() {
+	DB.Init()
+}
+
 func openDB(username, password, addr, name string) *gorm.DB {
 	config := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=%t&loc=%s",
 		username,

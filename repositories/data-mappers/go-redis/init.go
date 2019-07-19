@@ -13,6 +13,10 @@ type Init struct {
 
 var Client *Init
 
+func init() {
+	Client.Init()
+}
+
 func NewClient() *redis.Client {
 	options := &redis.Options{
 		Addr:     viper.GetString("redis.addr"), // use default Addr

@@ -16,14 +16,12 @@ type Config struct {
 
 var Logger *zap.Logger
 
-func Init(cfg string) error {
-	c := Config{
-		Name: cfg,
-	}
+func init() {
+	c := Config{}
 
 	// 初始化配置文件
 	if err := c.initConfig(); err != nil {
-		return err
+		panic(err)
 	}
 
 	// 初始化日志包
@@ -32,7 +30,6 @@ func Init(cfg string) error {
 	// 监控配置文件变化并热加载程序
 	c.watchConfig()
 
-	return nil
 }
 
 func (c *Config) initConfig() error {
