@@ -2,12 +2,13 @@ package permission
 
 import (
 	"alpha/domain/entity"
+	"alpha/pkg/constvar"
+	redis "alpha/repositories/data-mappers/go-redis"
+	"alpha/repositories/data-mappers/model"
+
 	"fmt"
 	"regexp"
 	"strings"
-
-	redis "alpha/repositories/data-mappers/go-redis"
-	"alpha/repositories/data-mappers/model"
 )
 
 const (
@@ -28,6 +29,12 @@ func (e *Entity) All(field string) ([]*model.PermissionModel, error) {
 }
 func (e *Entity) GenerateCache(list []*model.PermissionModel) error {
 	pipe := redis.Client.Client.TxPipeline()
+	//删除旧权限
+	keys, err := redis.Scan(fmt.Sprintf(CachePermissionKey, "*"), constvar.DefaultScanCount)
+	if err != nil {
+		return err
+	}
+	pipe.Del(keys...)
 	for i := range list[:] {
 		//判断是否为空
 		matched, err := regexp.Match("^[\\s\\S]*.*[^\\s][\\s\\S]*$", []byte(list[i].Cond))
@@ -39,12 +46,12 @@ func (e *Entity) GenerateCache(list []*model.PermissionModel) error {
 			continue
 		}
 		conditions := strings.Split(list[i].Cond, ",")
-		for i := range conditions[:] {
-			k := fmt.Sprintf(CachePermissionKey, conditions[i])
+		for j := range conditions[:] {
+			k := fmt.Sprintf(CachePermissionKey, conditions[j])
 			pipe.Set(k, list[i].Id, 0)
 		}
 	}
-	_, err := pipe.Exec()
+	_, err = pipe.Exec()
 	if err != nil {
 		return err
 	}
