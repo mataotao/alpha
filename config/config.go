@@ -26,7 +26,6 @@ func init() {
 
 	// 初始化日志包
 	Logger = c.initLog()
-
 	// 监控配置文件变化并热加载程序
 	c.watchConfig()
 
