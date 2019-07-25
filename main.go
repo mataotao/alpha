@@ -3,9 +3,9 @@ package main
 import (
 	"alpha/config"
 	redis "alpha/repositories/data-mappers/go-redis"
+	"alpha/repositories/data-mappers/immt"
 	"alpha/repositories/data-mappers/model"
 	"alpha/router"
-
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
@@ -21,7 +21,7 @@ import (
 )
 
 func main() {
-
+	immt.Add("bs", "ddd")
 	gin.DebugPrintRouteFunc = func(httpMethod, absolutePath, handlerName string, nuHandlers int) {
 		config.Logger.Info("endpoint",
 			zap.String("httpMethod", httpMethod),
@@ -31,9 +31,6 @@ func main() {
 		)
 	}
 
-	// init db
-	defer model.DB.Close()
-	defer redis.Client.Close()
 	// Set gin mode.
 	gin.SetMode(viper.GetString("runmode"))
 
@@ -86,6 +83,10 @@ func main() {
 	config.Logger.Info("Shutdown Server ...")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
+
+	defer model.DB.Close()
+	defer redis.Client.Close()
+	defer immt.Save()
 	if err := srv.Shutdown(ctx); err != nil {
 		config.Logger.Fatal("Server Shutdown: ",
 			zap.Error(err),

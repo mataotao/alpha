@@ -5,3 +5,4 @@ docker-compose/
 .idea/
 .DS_Store
 /conf/config.yaml
+/data/immt/*.gob
