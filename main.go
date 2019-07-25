@@ -21,7 +21,6 @@ import (
 )
 
 func main() {
-	immt.Add("bs", "ddd")
 	gin.DebugPrintRouteFunc = func(httpMethod, absolutePath, handlerName string, nuHandlers int) {
 		config.Logger.Info("endpoint",
 			zap.String("httpMethod", httpMethod),
@@ -84,9 +83,12 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
+	//关闭mysql
 	defer model.DB.Close()
+	//关闭redis
 	defer redis.Client.Close()
-	defer immt.Save()
+	defer immt.Close()
+
 	if err := srv.Shutdown(ctx); err != nil {
 		config.Logger.Fatal("Server Shutdown: ",
 			zap.Error(err),

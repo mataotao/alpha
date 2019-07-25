@@ -11,10 +11,10 @@ const DATAFILE = "./data/immt/dataFile.gob"
 var DATA = make(map[string]interface{})
 
 func init() {
-	load()
+	Init()
 }
 
-func Save() error {
+func Close() error {
 	fmt.Println("Saving", DATAFILE)
 	err := os.Remove(DATAFILE)
 	if err != nil {
@@ -38,7 +38,7 @@ func Save() error {
 	return nil
 }
 
-func load() error {
+func Init() error {
 	fmt.Println("Loading", DATAFILE)
 	loadFrom, err := os.Open(DATAFILE)
 	defer func() {
