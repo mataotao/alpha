@@ -6,7 +6,6 @@ import (
 	"alpha/repositories/data-mappers/immt"
 	"alpha/repositories/data-mappers/model"
 	"alpha/router"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
