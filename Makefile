@@ -8,6 +8,7 @@ clean:
 gotool:
 	@gofmt -w .
 	@GO111MODULE=on go vet .
+	@GO111MODULE=on golangci-lint run
 love:
 	@GO111MODULE=on GOPROXY=https://goproxy.io go run -race main.go
 push:

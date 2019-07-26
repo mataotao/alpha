@@ -37,12 +37,13 @@ func (e *Entity) GenerateCache(list []*model.PermissionModel) error {
 	if len(keys) > 0 {
 		pipe.Del(keys...)
 	}
+	reg, err := regexp.Compile(`^[\s\S]*.*[^\s][\s\S]*$`)
+	if err != nil {
+		return err
+	}
 	for i := range list[:] {
 		//判断是否为空
-		matched, err := regexp.Match("^[\\s\\S]*.*[^\\s][\\s\\S]*$", []byte(list[i].Cond))
-		if err != nil {
-			return err
-		}
+		matched := reg.Match([]byte(list[i].Cond))
 		//为空就跳过
 		if !matched {
 			continue
