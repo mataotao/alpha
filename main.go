@@ -22,12 +22,6 @@ import (
 )
 
 func main() {
-	go func() {
-		immt.MT.Print()
-		for i := 0; i < 1000; i++ {
-			immt.MT.Set(fmt.Sprintf("33333%d", i), i)
-		}
-	}()
 	gin.DebugPrintRouteFunc = func(httpMethod, absolutePath, handlerName string, nuHandlers int) {
 		config.Logger.Info("endpoint",
 			zap.String("httpMethod", httpMethod),
