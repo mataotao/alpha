@@ -6,7 +6,7 @@ import (
 	"alpha/repositories/data-mappers/immt"
 	"alpha/repositories/data-mappers/model"
 	"alpha/router"
-
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
@@ -22,6 +22,12 @@ import (
 )
 
 func main() {
+	go func() {
+		immt.MT.Print()
+		for i := 0; i < 1000; i++ {
+			immt.MT.Set(fmt.Sprintf("33333%d", i), i)
+		}
+	}()
 	gin.DebugPrintRouteFunc = func(httpMethod, absolutePath, handlerName string, nuHandlers int) {
 		config.Logger.Info("endpoint",
 			zap.String("httpMethod", httpMethod),
@@ -88,7 +94,7 @@ func main() {
 	defer model.DB.Close()
 	//关闭redis
 	defer redis.Client.Close()
-	defer immt.MT.Close()
+	defer immt.MT.Save()
 
 	if err := srv.Shutdown(ctx); err != nil {
 		config.Logger.Fatal("Server Shutdown: ",

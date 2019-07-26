@@ -2,6 +2,7 @@ package immt
 
 import (
 	"alpha/config"
+
 	"go.uber.org/zap"
 
 	"encoding/gob"
@@ -9,12 +10,23 @@ import (
 	"os"
 )
 
+const (
+	maxSendData int = 10
+)
+
 var MT *Mt
+var saveDisk = make(chan struct{}, 1)
 
 type Mt struct {
 	data     map[string]interface{}
 	looking  chan struct{}
 	dataFile string
+	append   chan *command
+}
+type command struct {
+	action string
+	key    string
+	value  interface{}
 }
 
 func init() {
@@ -22,15 +34,23 @@ func init() {
 		data:     make(map[string]interface{}),
 		looking:  make(chan struct{}, 1),
 		dataFile: "./data/immt/dataFile.gob",
+		append:   make(chan *command, maxSendData),
 	}
 	if err := MT.Init(); err != nil {
 		config.Logger.Error("immt error",
 			zap.Error(err),
 		)
 	}
+	go func() {
+		appending()
+	}()
 }
 
-func (mt *Mt) Close() error {
+func (mt *Mt) Save() error {
+	saveDisk <- struct{}{}
+	defer func() {
+		<-saveDisk
+	}()
 	fmt.Println("Saving", mt.dataFile)
 	if err := os.Remove(mt.dataFile); err != nil {
 		fmt.Println(err)
@@ -69,12 +89,20 @@ func (mt *Mt) Init() error {
 	return nil
 }
 
-func (mt *Mt) Set(k string, n interface{}) bool {
+func (mt *Mt) Set(k string, v interface{}) bool {
 	if k == "" {
 		return false
 	}
 	if mt.Get(k) == nil {
-		mt.data[k] = n
+		mt.data[k] = v
+		go func() {
+			command := &command{
+				action: "SET",
+				key:    k,
+				value:  v,
+			}
+			mt.append <- command
+		}()
 		return true
 	}
 
@@ -84,6 +112,13 @@ func (mt *Mt) Set(k string, n interface{}) bool {
 func (mt *Mt) Delete(k string) bool {
 	if mt.Get(k) == nil {
 		delete(mt.data, k)
+		go func() {
+			command := &command{
+				action: "DELETE",
+				key:    k,
+			}
+			mt.append <- command
+		}()
 		return true
 	}
 	return false
