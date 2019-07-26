@@ -6,6 +6,7 @@ import (
 	"alpha/repositories/data-mappers/immt"
 	"alpha/repositories/data-mappers/model"
 	"alpha/router"
+
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
@@ -87,7 +88,7 @@ func main() {
 	defer model.DB.Close()
 	//关闭redis
 	defer redis.Client.Close()
-	defer immt.Close()
+	defer immt.MT.Close()
 
 	if err := srv.Shutdown(ctx); err != nil {
 		config.Logger.Fatal("Server Shutdown: ",

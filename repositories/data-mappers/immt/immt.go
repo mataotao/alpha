@@ -1,28 +1,43 @@
 package immt
 
 import (
+	"alpha/config"
+	"go.uber.org/zap"
+
 	"encoding/gob"
 	"fmt"
 	"os"
 )
 
-const DATAFILE = "./data/immt/dataFile.gob"
+var MT *Mt
 
-var DATA = make(map[string]interface{})
-
-func init() {
-	Init()
+type Mt struct {
+	data     map[string]interface{}
+	looking  chan struct{}
+	dataFile string
 }
 
-func Close() error {
-	fmt.Println("Saving", DATAFILE)
-	err := os.Remove(DATAFILE)
-	if err != nil {
+func init() {
+	MT = &Mt{
+		data:     make(map[string]interface{}),
+		looking:  make(chan struct{}, 1),
+		dataFile: "./data/immt/dataFile.gob",
+	}
+	if err := MT.Init(); err != nil {
+		config.Logger.Error("immt error",
+			zap.Error(err),
+		)
+	}
+}
+
+func (mt *Mt) Close() error {
+	fmt.Println("Saving", mt.dataFile)
+	if err := os.Remove(mt.dataFile); err != nil {
 		fmt.Println(err)
 	}
-	saveTo, err := os.Create(DATAFILE)
+	saveTo, err := os.Create(mt.dataFile)
 	if err != nil {
-		fmt.Println("Cannot create", DATAFILE)
+		fmt.Println("Cannot create", mt.dataFile)
 		return err
 	}
 	defer func() {
@@ -30,17 +45,17 @@ func Close() error {
 	}()
 
 	encoder := gob.NewEncoder(saveTo)
-	err = encoder.Encode(DATA)
+	err = encoder.Encode(mt.data)
 	if err != nil {
-		fmt.Println("Cannot save to", DATAFILE)
+		fmt.Println("Cannot save to", mt.dataFile)
 		return err
 	}
 	return nil
 }
 
-func Init() error {
-	fmt.Println("Loading", DATAFILE)
-	loadFrom, err := os.Open(DATAFILE)
+func (mt *Mt) Init() error {
+	fmt.Println("Loading", mt.dataFile)
+	loadFrom, err := os.Open(mt.dataFile)
 	defer func() {
 		err = loadFrom.Close()
 	}()
@@ -50,47 +65,46 @@ func Init() error {
 	}
 
 	decoder := gob.NewDecoder(loadFrom)
-	err = decoder.Decode(&DATA)
+	err = decoder.Decode(&mt.data)
 	return nil
 }
 
-func Add(k string, n interface{}) bool {
+func (mt *Mt) Set(k string, n interface{}) bool {
 	if k == "" {
 		return false
 	}
+	if mt.Get(k) == nil {
+		mt.data[k] = n
+		return true
+	}
 
-	if Lookup(k) == nil {
-		DATA[k] = n
+	return false
+}
+
+func (mt *Mt) Delete(k string) bool {
+	if mt.Get(k) == nil {
+		delete(mt.data, k)
 		return true
 	}
 	return false
 }
 
-func Delete(k string) bool {
-	if Lookup(k) != nil {
-		delete(DATA, k)
-		return true
-	}
-	return false
-}
-
-func Lookup(k string) *interface{} {
-	_, ok := DATA[k]
+func (mt *Mt) Get(k string) *interface{} {
+	mt.looking <- struct{}{}
+	defer func() {
+		<-mt.looking
+	}()
+	_, ok := mt.data[k]
 	if ok {
-		n := DATA[k]
+		n := mt.data[k]
 		return &n
 	} else {
 		return nil
 	}
 }
 
-func Change(k string, n interface{}) bool {
-	DATA[k] = n
-	return true
-}
-
-func Print() {
-	for k, d := range DATA {
+func (mt *Mt) Print() {
+	for k, d := range mt.data {
 		fmt.Println("key: %s value: %v\n", k, d)
 	}
 }
