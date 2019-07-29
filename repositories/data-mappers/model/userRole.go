@@ -21,10 +21,10 @@ func (u *UserRoleModel) AllByUserId(field string) ([]*UserRoleModel, error) {
 	}
 	return list, nil
 }
-func (u *UserRoleModel) Ids(list []*UserRoleModel) []uint64 {
+func (u *UserRoleModel) RoleIds(list []*UserRoleModel) []uint64 {
 	ids := make([]uint64, 0, len(list))
 	for i := range list[:] {
-		ids = append(ids, list[i].Id)
+		ids = append(ids, list[i].RoleId)
 	}
 	return ids
 }

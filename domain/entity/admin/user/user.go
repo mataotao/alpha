@@ -102,11 +102,11 @@ func (e *Entity) GetRoleIds() ([]uint64, error) {
 	userRoleModel := &model.UserRoleModel{
 		UserId: e.UserModel.Id,
 	}
-	list, err := userRoleModel.AllByUserId("id")
+	list, err := userRoleModel.AllByUserId("role_id")
 	if err != nil {
 		return ids, err
 	}
-	ids = userRoleModel.Ids(list)
+	ids = userRoleModel.RoleIds(list)
 	e.RoleIds = ids
 	return ids, nil
 }
@@ -151,6 +151,17 @@ func (e *Entity) UpdateLogin() error {
 	data := make(map[string]interface{})
 	data["last_ip"] = e.UserModel.LastIp
 	data["last_time"] = time.Now()
+	err := (&e.UserModel).Updates(data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+//更新信息
+func (e *Entity) UpdatePwd() error {
+	data := make(map[string]interface{})
+	data["password"] = e.UserModel.Password
 	err := (&e.UserModel).Updates(data)
 	if err != nil {
 		return err

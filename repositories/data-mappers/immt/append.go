@@ -15,8 +15,8 @@ import (
 const (
 	maxPendingChannel int = 10
 	maxPendingData    int = 10
-	maxTime               = 10 * time.Minute
-	maxDataTime           = 1 * time.Minute
+	maxTime               = 1 * time.Minute
+	maxDataTime           = 30 * time.Second
 )
 
 func appending() {

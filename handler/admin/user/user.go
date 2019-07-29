@@ -2,12 +2,23 @@ package user
 
 type CreateRequest struct {
 	Username string `json:"username" valid:"required,stringlength(1|20)~用户名最大长度20"`
-	Password string `json:"password" valid:"required,stringlength(1|20)~密码最大长度20"`
+	PasswordInfo
 	Info
 }
 type UpdateRequest struct {
 	Id uint64 `uri:"id" valid:"required"`
 	Info
+}
+type PasswordInfo struct {
+	Password string `json:"password" valid:"required,stringlength(1|20)~密码最大长度20"`
+}
+type PwdRequest struct {
+	Id uint64 `uri:"id" valid:"required"`
+	PasswordInfo
+}
+type StatusRequest struct {
+	Id     uint64 `uri:"id" valid:"required"`
+	Status byte   `json:"status" valid:"required,in(1,2)~此类型不存在"`
 }
 
 type Info struct {
