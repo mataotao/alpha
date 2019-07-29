@@ -10,7 +10,7 @@ import (
 
 const (
 	ON     byte = iota + 1
-	FREEZE  //冻结
+	FREEZE      //冻结
 )
 
 type UserModel struct {
