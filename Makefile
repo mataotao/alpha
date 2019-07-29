@@ -1,6 +1,6 @@
 server = "alpha"
-.IGNORE:love
-all: clean gotool
+.IGNORE:love vet
+all: clean gotool vet
 	@GO111MODULE=on GOPROXY=https://goproxy.io go build -o ${server} -v .
 clean:
 	@rm -f ${server}
@@ -8,7 +8,6 @@ clean:
 gotool:
 	@gofmt -w .
 	@GO111MODULE=on go vet .
-	@GO111MODULE=on golangci-lint run
 love:
 	@GO111MODULE=on GOPROXY=https://goproxy.io go run -race main.go
 push:
@@ -17,4 +16,6 @@ push:
 	@git push origin $(b)
 execute:
 	@chmod +x ${server}
+vet:
+	@GO111MODULE=on golangci-lint run
 .PHONY: clean gotool

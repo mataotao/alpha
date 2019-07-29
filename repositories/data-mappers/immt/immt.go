@@ -51,7 +51,9 @@ func (mt *Mt) Save() error {
 	defer func() {
 		<-saveDisk
 	}()
-	fmt.Println("Saving", mt.dataFile)
+	config.Logger.Info("user update",
+		zap.String("Saving", mt.dataFile),
+	)
 	if err := os.Remove(mt.dataFile); err != nil {
 		fmt.Println(err)
 	}

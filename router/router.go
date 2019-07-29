@@ -36,7 +36,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	}
 
 	admin := g.Group("/admin/")
-	admin.Use(middleware.AuthMiddleware())
+	//admin.Use(middleware.AuthMiddleware())
 	{
 		//新增权限
 		admin.POST("permission", permission.Create)
@@ -62,6 +62,8 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 
 		//新增用户
 		admin.POST("user", user.Create)
+		//更新
+		admin.PUT("user/:id", user.Update)
 	}
 	// The health check handlers
 	svcd := g.Group("/sd")

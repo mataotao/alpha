@@ -8,7 +8,7 @@ import (
 
 const (
 	ON     byte = iota + 1
-	FREEZE      //冻结
+	FREEZE  //冻结
 )
 
 type UserModel struct {
@@ -56,6 +56,32 @@ func (u *UserModel) Create(roleIds []uint64) error {
 		return err
 	}
 
+	var valueSql strings.Builder
+	for i := range roleIds[:] {
+		valueSql.WriteString(fmt.Sprintf("(%d,%d),", u.Id, roleIds[i]))
+	}
+	//转化成字符串
+	sql := fmt.Sprintf(`INSERT INTO %s (user_id,role_id) VALUES %s`, new(UserRoleModel).TableName(), strings.TrimSuffix(valueSql.String(), ","))
+	if err := tx.Exec(sql).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	tx.Commit()
+	return nil
+
+}
+
+func (u *UserModel) Update(roleIds []uint64) error {
+	tx := DB.Alpha.Begin()
+	if err := tx.Model(u).Update(u).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	if err := tx.Where("user_id = ?", u.Id).Delete(UserRoleModel{}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
 	var valueSql strings.Builder
 	for i := range roleIds[:] {
 		valueSql.WriteString(fmt.Sprintf("(%d,%d),", u.Id, roleIds[i]))

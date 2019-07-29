@@ -36,6 +36,11 @@ func (e *Entity) Create(roleIds []uint64) error {
 	return nil
 }
 
+//更新用户
+func (e *Entity) Update(roleIds []uint64) error {
+	return (&e.UserModel).Update(roleIds)
+}
+
 //检查用户名唯一
 func (e *Entity) Unique() (bool, error) {
 	if e.UserModel.Username == "" {
@@ -88,7 +93,7 @@ func (e *Entity) IsRoot() bool {
 	return e.UserModel.IsRoot == model.ON
 }
 
-//获取用户权限ids
+//获取用户ids
 func (e *Entity) GetRoleIds() ([]uint64, error) {
 	var ids []uint64
 	if e.UserModel.Id == 0 {
