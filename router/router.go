@@ -68,6 +68,8 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		admin.PUT("user-pwd/:id", user.UpdatePwd)
 		//改变状态
 		admin.PUT("user-status/:id", user.ChangeStatus)
+		//获取用户详情
+		admin.GET("user/:id", user.Get)
 	}
 	// The health check handlers
 	svcd := g.Group("/sd")
