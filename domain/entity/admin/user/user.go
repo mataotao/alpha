@@ -158,11 +158,20 @@ func (e *Entity) UpdateLogin() error {
 	return nil
 }
 
-//更新信息
+//更新密码
 func (e *Entity) UpdatePwd() error {
 	data := make(map[string]interface{})
 	data["password"] = e.UserModel.Password
 	err := (&e.UserModel).Updates(data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+//改变状态
+func (e *Entity) ChangeStatus() error {
+	err := (&e.UserModel).ChangeStatus()
 	if err != nil {
 		return err
 	}

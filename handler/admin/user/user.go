@@ -17,8 +17,7 @@ type PwdRequest struct {
 	PasswordInfo
 }
 type StatusRequest struct {
-	Id     uint64 `uri:"id" valid:"required"`
-	Status byte   `json:"status" valid:"required,in(1,2)~此类型不存在"`
+	Id uint64 `uri:"id" valid:"required"`
 }
 
 type Info struct {

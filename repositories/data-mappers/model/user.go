@@ -1,6 +1,8 @@
 package model
 
 import (
+	"github.com/jinzhu/gorm"
+
 	"fmt"
 	"strings"
 	"time"
@@ -8,7 +10,7 @@ import (
 
 const (
 	ON     byte = iota + 1
-	FREEZE      //冻结
+	FREEZE  //冻结
 )
 
 type UserModel struct {
@@ -96,6 +98,11 @@ func (u *UserModel) Update(roleIds []uint64) error {
 	return nil
 
 }
+func (u *UserModel) ChangeStatus() error {
+	cond := "CASE `status` WHEN ? THEN ? WHEN ? THEN ? END"
+	return DB.Alpha.Model(u).Update("status", gorm.Expr(cond, FREEZE, ON, ON, FREEZE)).Error
+}
+
 func (u *UserModel) Updates(data map[string]interface{}) error {
 	return DB.Alpha.Model(&UserModel{}).Where("id = ?", u.Id).Updates(data).Error
 }

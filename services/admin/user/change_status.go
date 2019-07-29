@@ -8,20 +8,12 @@ import (
 	"go.uber.org/zap"
 )
 
-func UpdatePwd(user *model.UserModel) error {
+func ChangeStatus(user *model.UserModel) error {
 	userEntity := userDomain.NewEntity(user.Id)
 	userEntity.UserModel = *user
-	//加密密码
-	if err := userEntity.Encrypt(); err != nil {
-		config.Logger.Error("user update pwd",
-			zap.Error(err),
-		)
-		return err
-
-	}
 	//更新信息
-	if err := userEntity.UpdatePwd(); err != nil {
-		config.Logger.Error("user update pwd",
+	if err := userEntity.ChangeStatus(); err != nil {
+		config.Logger.Error("user change status",
 			zap.Error(err),
 		)
 		return err

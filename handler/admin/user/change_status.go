@@ -12,13 +12,9 @@ import (
 	"go.uber.org/zap"
 )
 
-func UpdatePwd(c *gin.Context) {
-	var r PwdRequest
+func ChangeStatus(c *gin.Context) {
+	var r StatusRequest
 	if err := c.ShouldBindUri(&r); err != nil {
-		handler.SendBadResponse(c, err, nil)
-		return
-	}
-	if err := c.ShouldBind(&r); err != nil {
 		handler.SendBadResponse(c, err, nil)
 		return
 	}
@@ -31,10 +27,9 @@ func UpdatePwd(c *gin.Context) {
 		BaseModel: model.BaseModel{
 			Id: r.Id,
 		},
-		Password: r.Password,
 	}
-	if err := service.UpdatePwd(user); err != nil {
-		config.Logger.Error("role update pwd",
+	if err := service.ChangeStatus(user); err != nil {
+		config.Logger.Error("role change status",
 			zap.Error(err),
 		)
 		handler.SendBadResponse(c, err, nil)
