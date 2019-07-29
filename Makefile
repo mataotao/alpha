@@ -10,7 +10,7 @@ gotool:
 	@GO111MODULE=on go vet .
 love:
 	@GO111MODULE=on GOPROXY=https://goproxy.io go run -race main.go
-push:
+push: vet
 	@gofmt -w .
 	@git commit -m'$(m)'
 	@git push origin $(b)
