@@ -4,7 +4,6 @@ import (
 	"alpha/config"
 	userDomain "alpha/domain/entity/admin/user"
 	"alpha/pkg/errno"
-	"alpha/repositories/data-mappers/model"
 	"time"
 
 	"go.uber.org/zap"
@@ -23,10 +22,9 @@ type GetResponse struct {
 	RoleIds  []uint64  `json:"role_ids"`
 }
 
-func Get(user *model.UserModel) (*GetResponse, error) {
+func Get(uid uint64) (*GetResponse, error) {
 	getResponse := new(GetResponse)
-	userEntity := userDomain.NewEntity(user.Id)
-	userEntity.UserModel = *user
+	userEntity := userDomain.NewEntity(uid)
 	notfound, err := userEntity.Get("*")
 	if err != nil {
 		config.Logger.Error("user get",

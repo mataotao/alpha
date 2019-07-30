@@ -4,7 +4,6 @@ import (
 	"alpha/config"
 	"alpha/handler"
 	"alpha/pkg/errno"
-	"alpha/repositories/data-mappers/model"
 	service "alpha/services/admin/user"
 
 	"github.com/asaskevich/govalidator"
@@ -23,12 +22,8 @@ func ChangeStatus(c *gin.Context) {
 		handler.SendBadResponseErrors(c, errno.ErrValidation, nil, errMap)
 		return
 	}
-	user := &model.UserModel{
-		BaseModel: model.BaseModel{
-			Id: r.Id,
-		},
-	}
-	if err := service.ChangeStatus(user); err != nil {
+
+	if err := service.ChangeStatus(r.Id); err != nil {
 		config.Logger.Error("role change status",
 			zap.Error(err),
 		)

@@ -22,6 +22,9 @@ type StatusRequest struct {
 type GetRequest struct {
 	Id uint64 `uri:"id" valid:"required"`
 }
+type ListRequest struct {
+	Id uint64 `uri:"id" valid:"required"`
+}
 
 type Info struct {
 	Name    string   `json:"name" valid:"required,stringlength(1|20)~名称最大长度20"`

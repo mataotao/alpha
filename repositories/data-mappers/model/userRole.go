@@ -13,7 +13,7 @@ func (u *UserRoleModel) AllByUserId(field string) ([]*UserRoleModel, error) {
 	list := make([]*UserRoleModel, 0)
 	db := DB.Alpha.Select(field)
 	if u.UserId != 0 {
-		db = db.Where("user_id in (?)", u.UserId)
+		db = db.Where("user_id = ?", u.UserId)
 	}
 	//查询数据
 	if err := db.Find(&list).Error; err != nil {

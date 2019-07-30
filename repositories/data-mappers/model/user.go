@@ -33,9 +33,6 @@ func (u *UserModel) TableName() string {
 func (u *UserModel) Get(field string) (bool, error) {
 	var notFound bool
 	db := DB.Alpha.Select(field)
-	if u.Id != 0 {
-		db = db.Where("id = ?", u.Id)
-	}
 	if u.Username != "" {
 		db = db.Where("username = ?", u.Username)
 	}

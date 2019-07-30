@@ -43,9 +43,7 @@ func (e *Entity) Update(roleIds []uint64) error {
 
 //检查用户名唯一
 func (e *Entity) Unique() (bool, error) {
-	if e.UserModel.Username == "" {
-		panic("username为空")
-	}
+	e.BindSId()
 	notFound, err := (&e.UserModel).Get("id")
 	if err != nil {
 		return false, err
@@ -64,12 +62,7 @@ func (e *Entity) Encrypt() (err error) {
 
 //获取信息
 func (e *Entity) Get(field string) (bool, error) {
-	if id := (&e.Entity).GetId(); id != 0 {
-		e.UserModel.Id = id
-	}
-	if sid := (&e.Entity).GetSId(); sid != "" {
-		e.UserModel.Username = sid
-	}
+	e.BindIds()
 	notFound, err := (&e.UserModel).Get(field)
 	if err != nil {
 		return notFound, err
@@ -96,9 +89,7 @@ func (e *Entity) IsRoot() bool {
 //获取用户ids
 func (e *Entity) GetRoleIds() ([]uint64, error) {
 	var ids []uint64
-	if e.UserModel.Id == 0 {
-		panic("id为空")
-	}
+	e.BindId()
 	userRoleModel := &model.UserRoleModel{
 		UserId: e.UserModel.Id,
 	}
@@ -127,9 +118,7 @@ func (e *Entity) GetPermissionIds(roleIds []uint64) ([]uint64, error) {
 
 //存入权限到缓存
 func (e *Entity) SetPermissionToCache() error {
-	if e.UserModel.Id == 0 {
-		panic("id为空")
-	}
+	e.BindId()
 	if len(e.PermissionIds) == 0 {
 		panic("permission_ids为空")
 	}
@@ -171,6 +160,7 @@ func (e *Entity) UpdatePwd() error {
 
 //改变状态
 func (e *Entity) ChangeStatus() error {
+	e.BindId()
 	err := (&e.UserModel).ChangeStatus()
 	if err != nil {
 		return err
@@ -187,6 +177,34 @@ func (e *Entity) TokenSign() (string, error) {
 	return t, nil
 }
 
+//领域检查
+func (e *Entity) BindIds() {
+	if id := (&e.Entity).GetId(); id != 0 {
+		e.UserModel.Id = id
+	}
+	if sid := (&e.Entity).GetSId(); sid != "" {
+		e.UserModel.Username = sid
+	}
+	if e.UserModel.Id == 0 && e.UserModel.Username == "" {
+		panic("请传入唯一标识")
+	}
+}
+func (e *Entity) BindId() {
+	if id := (&e.Entity).GetId(); id != 0 {
+		e.UserModel.Id = id
+	}
+	if e.UserModel.Id == 0 {
+		panic("请传入唯一标识")
+	}
+}
+func (e *Entity) BindSId() {
+	if sid := (&e.Entity).GetSId(); sid != "" {
+		e.UserModel.Username = sid
+	}
+	if e.UserModel.Username == "" {
+		panic("请传入唯一标识")
+	}
+}
 func NewEntity(id uint64) *Entity {
 	e := new(Entity)
 	(&e.Entity).SetId(id)
