@@ -10,13 +10,11 @@ import (
 	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-
-	"time"
 )
 
-func Create(c *gin.Context) {
-	var r CreateRequest
-	if err := c.ShouldBind(&r); err != nil {
+func List(c *gin.Context) {
+	var r ListRequest
+	if err := c.ShouldBindQuery(&r); err != nil {
 		handler.SendBadResponse(c, err, nil)
 		return
 	}
@@ -29,19 +27,15 @@ func Create(c *gin.Context) {
 		Username: r.Username,
 		Name:     r.Name,
 		Mobile:   r.Mobile,
-		Password: r.Password,
-		HeadImg:  r.HeadImg,
-		LastTime: time.Now(),
-		LastIp:   c.ClientIP(),
-		Status:   model.ON,
 	}
-	if err := service.Create(user, r.RoleIds); err != nil {
-		config.Logger.Error("user create",
+	info, err := service.List(user, r.Page, r.Limit)
+	if err != nil {
+		config.Logger.Error("user list",
 			zap.Error(err),
 		)
 		handler.SendBadResponse(c, err, nil)
 		return
 	}
 
-	handler.SendResponse(c, nil, nil)
+	handler.SendResponse(c, nil, info)
 }

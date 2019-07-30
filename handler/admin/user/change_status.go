@@ -24,7 +24,7 @@ func ChangeStatus(c *gin.Context) {
 	}
 
 	if err := service.ChangeStatus(r.Id); err != nil {
-		config.Logger.Error("role change status",
+		config.Logger.Error("user change status",
 			zap.Error(err),
 		)
 		handler.SendBadResponse(c, err, nil)

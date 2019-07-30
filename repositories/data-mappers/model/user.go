@@ -1,6 +1,8 @@
 package model
 
 import (
+	"alpha/pkg/constvar"
+
 	"github.com/jinzhu/gorm"
 
 	"fmt"
@@ -10,7 +12,7 @@ import (
 
 const (
 	ON     byte = iota + 1
-	FREEZE      //冻结
+	FREEZE  //冻结
 )
 
 type UserModel struct {
@@ -102,4 +104,34 @@ func (u *UserModel) ChangeStatus() error {
 
 func (u *UserModel) Updates(data map[string]interface{}) error {
 	return DB.Alpha.Model(&UserModel{}).Where("id = ?", u.Id).Updates(data).Error
+}
+func (u *UserModel) List(field string, page, limit uint64) ([]*UserModel, uint64, error) {
+	if limit == 0 {
+		limit = constvar.DefaultLimit
+	}
+	if page == 0 {
+		page = constvar.DefaultPage
+	}
+	start := (page - 1) * limit
+	var count uint64
+	list := make([]*UserModel, 0)
+	db := DB.Alpha.Select(field)
+	if u.Name != "" {
+		db = db.Where(fmt.Sprintf("name like '%%%s%%'", u.Name))
+	}
+	if u.Username != "" {
+		db = db.Where(fmt.Sprintf("username like '%%%s%%'", u.Username))
+	}
+	if u.Mobile != 0 {
+		db = db.Where(fmt.Sprintf("mobile like '%%%d%%'", u.Mobile))
+	}
+
+	if err := db.Model(&UserModel{}).Count(&count).Error; err != nil {
+		return list, count, err
+	}
+
+	if err := db.Offset(start).Limit(limit).Order("id desc").Find(&list).Error; err != nil {
+		return list, count, err
+	}
+	return list, count, nil
 }

@@ -23,7 +23,11 @@ type GetRequest struct {
 	Id uint64 `uri:"id" valid:"required"`
 }
 type ListRequest struct {
-	Id uint64 `uri:"id" valid:"required"`
+	Page     uint64 `form:"page"`
+	Limit    uint64 `form:"limit"`
+	Username string `form:"username"`
+	Name     string `form:"name"`
+	Mobile   uint64 `form:"mobile"`
 }
 
 type Info struct {

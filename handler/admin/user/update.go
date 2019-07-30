@@ -36,7 +36,7 @@ func Update(c *gin.Context) {
 		HeadImg: r.HeadImg,
 	}
 	if err := service.Update(user, r.RoleIds); err != nil {
-		config.Logger.Error("role update",
+		config.Logger.Error("user update",
 			zap.Error(err),
 		)
 		handler.SendBadResponse(c, err, nil)

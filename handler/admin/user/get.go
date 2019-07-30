@@ -25,7 +25,7 @@ func Get(c *gin.Context) {
 
 	info, err := service.Get(r.Id)
 	if err != nil {
-		config.Logger.Error("role change status",
+		config.Logger.Error("user get",
 			zap.Error(err),
 		)
 		handler.SendBadResponse(c, err, nil)

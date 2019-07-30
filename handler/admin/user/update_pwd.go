@@ -34,7 +34,7 @@ func UpdatePwd(c *gin.Context) {
 		Password: r.Password,
 	}
 	if err := service.UpdatePwd(user); err != nil {
-		config.Logger.Error("role update pwd",
+		config.Logger.Error("user update pwd",
 			zap.Error(err),
 		)
 		handler.SendBadResponse(c, err, nil)
