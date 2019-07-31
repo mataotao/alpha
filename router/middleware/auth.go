@@ -23,8 +23,8 @@ func AuthMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		c.Set("user_id", t.ID)
-		c.Set("user_id", t.Username)
+		c.Set("user_id", int(t.ID))
+		c.Set("user_name", t.Username)
 		//获取权限id
 		value, err := redis.Client.Client.Get(fmt.Sprintf(permissionDomain.CachePermissionKey, c.HandlerName())).Result()
 		if err == gredis.Nil {
