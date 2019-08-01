@@ -22,6 +22,10 @@
 * [zap](https://godoc.org/go.uber.org/zap) (log包)
 ## redis
 版本 5.0以上,如果不用streams可以不用
+redis最低4.0+  
+需要安装的模块
+
+* 漏斗限流[libredis_cell](https://github.com/brandur/redis-cell)
 ## mysql
 版本 5.7以上
 ```
