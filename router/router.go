@@ -22,7 +22,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	g.Use(gin.Recovery())
 	g.Use(mw...)
 	g.Use(middleware.RequestId())
-	g.Use(limiter.TBIP())
+
 	pprof.Register(g)
 	// 404 Handler.
 	g.NoRoute(func(c *gin.Context) {
@@ -34,9 +34,9 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	{
 		global.GET("cache/permission", cache.Permission)
 	}
-
 	admin := g.Group("/admin/")
 	admin.Use(middleware.AuthMiddleware())
+	admin.Use(limiter.AdminRedisCell())
 	{
 		//新增权限
 		admin.POST("permission", permission.Create)
