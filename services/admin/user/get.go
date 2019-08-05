@@ -20,7 +20,6 @@ type GetResponse struct {
 	IsRoot   byte      `json:"is_root"`
 	Status   byte      `json:"status"`
 	RoleIds  []uint64  `json:"role_ids"`
-	Role     string    `json:"role"`
 }
 
 func Get(uid uint64) (*GetResponse, error) {
