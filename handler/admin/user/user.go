@@ -33,6 +33,6 @@ type ListRequest struct {
 type Info struct {
 	Name    string   `json:"name" valid:"required,stringlength(1|20)~名称最大长度20"`
 	Mobile  uint64   `json:"mobile" valid:"required~请填写手机号,length(11|11)~手机号格式不正确"`
-	Avatar string   `json:"avatar" valid:"stringlength(1|500)~头像最大长度500"`
+	Avatar  string   `json:"avatar" valid:"stringlength(1|500)~头像最大长度500"`
 	RoleIds []uint64 `json:"role_ids" valid:"required~请选择角色"`
 }

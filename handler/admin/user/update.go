@@ -31,8 +31,8 @@ func Update(c *gin.Context) {
 		BaseModel: model.BaseModel{
 			Id: r.Id,
 		},
-		Name:    r.Name,
-		Mobile:  r.Mobile,
+		Name:   r.Name,
+		Mobile: r.Mobile,
 		Avatar: r.Avatar,
 	}
 	if err := service.Update(user, r.RoleIds); err != nil {

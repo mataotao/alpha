@@ -14,7 +14,7 @@ type GetResponse struct {
 	Username string    `json:"username"`
 	Name     string    `json:"name"`
 	Mobile   uint64    `json:"mobile"`
-	Avatar  string    `json:"avatar"`
+	Avatar   string    `json:"avatar"`
 	LastTime time.Time `json:"last_time"`
 	LastIp   string    `json:"last_ip"`
 	IsRoot   byte      `json:"is_root"`
@@ -48,13 +48,13 @@ func Get(uid uint64) (*GetResponse, error) {
 		Username: userEntity.UserModel.Username,
 		Name:     userEntity.UserModel.Name,
 		Mobile:   userEntity.UserModel.Mobile,
-		Avatar:  userEntity.UserModel.Avatar,
+		Avatar:   userEntity.UserModel.Avatar,
 		LastTime: userEntity.UserModel.LastTime,
 		LastIp:   userEntity.UserModel.LastIp,
 		IsRoot:   userEntity.UserModel.IsRoot,
 		Status:   userEntity.UserModel.Status,
 		RoleIds:  userEntity.RoleIds,
-		Role:  "admin",
+		Role:     "admin",
 	}
 
 	return getResponse, nil

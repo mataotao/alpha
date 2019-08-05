@@ -33,12 +33,12 @@ func Update(c *gin.Context) {
 	}
 	//赋值
 	p := model.PermissionModel{
-		Label:         r.Label,
-		Url:           r.Url,
-		Sort:          r.Sort,
-		Cond:          r.Cond,
-		Component:          r.Component,
-		Icon:          r.Icon,
+		Label:     r.Label,
+		Url:       r.Url,
+		Sort:      r.Sort,
+		Cond:      r.Cond,
+		Component: r.Component,
+		Icon:      r.Icon,
 	}
 	p.Id = r.Id //创建
 	if err := p.Update(); err != nil {

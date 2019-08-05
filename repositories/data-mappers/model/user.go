@@ -21,7 +21,7 @@ type UserModel struct {
 	Name     string    `json:"name"`
 	Mobile   uint64    `json:"mobile"`
 	Password string    `json:"password"`
-	Avatar  string    `json:"avatar"`
+	Avatar   string    `json:"avatar"`
 	LastTime time.Time `json:"last_time"`
 	LastIp   string    `json:"last_ip"`
 	IsRoot   uint8     `json:"is_root"`

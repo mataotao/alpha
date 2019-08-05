@@ -29,14 +29,14 @@ func Create(c *gin.Context) {
 	}
 	//赋值
 	p := model.PermissionModel{
-		Label:         r.Label,
-		Pid:           r.Pid,
-		Level:         r.Level,
-		Url:           r.Url,
-		Sort:          r.Sort,
-		Cond:          r.Cond,
-		Component:          r.Component,
-		Icon:          r.Icon,
+		Label:     r.Label,
+		Pid:       r.Pid,
+		Level:     r.Level,
+		Url:       r.Url,
+		Sort:      r.Sort,
+		Cond:      r.Cond,
+		Component: r.Component,
+		Icon:      r.Icon,
 	}
 
 	//创建
