@@ -30,12 +30,12 @@ func Create(c *gin.Context) {
 	//赋值
 	p := model.PermissionModel{
 		Label:         r.Label,
-		IsContainMenu: r.IsContainMenu,
 		Pid:           r.Pid,
 		Level:         r.Level,
 		Url:           r.Url,
 		Sort:          r.Sort,
 		Cond:          r.Cond,
+		Component:          r.Component,
 		Icon:          r.Icon,
 	}
 

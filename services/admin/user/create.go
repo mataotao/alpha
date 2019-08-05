@@ -53,6 +53,7 @@ func PermissionIds(userEntity *userDomain.Entity) ([]uint64, error) {
 			return ids, err
 		}
 		ids = permissionModel.Ids(plist)
+		userEntity.PermissionIds = ids
 	} else {
 		_, err := userEntity.GetRoleIds()
 		if err != nil {

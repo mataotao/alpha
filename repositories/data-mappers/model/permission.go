@@ -2,24 +2,25 @@ package model
 
 type PermissionModel struct {
 	BaseModel
-	Label         string `json:"label"`
-	IsContainMenu uint8  `json:"is_contain_menu"`
-	Pid           uint64 `json:"pid"`
-	Level         uint8  `json:"level"`
-	Url           string `json:"url"`
-	Sort          uint64 `json:"sort"`
-	Cond          string `json:"cond"`
-	Icon          string `json:"icon"`
+	Label     string `json:"label"`
+	Pid       uint64 `json:"pid"`
+	Level     uint8  `json:"level"`
+	Url       string `json:"url"`
+	Sort      uint64 `json:"sort"`
+	Cond      string `json:"cond"`
+	Component string `json:"component"`
+	Icon      string `json:"icon"`
 }
 type PermissionListInfo struct {
-	Id            uint64                `json:"id"`
-	Label         string                `json:"label" `
-	IsContainMenu uint8                 `json:"is_contain_menu" `
-	Pid           uint64                `json:"pid" `
-	Level         uint8                 `json:"level" `
-	Url           string                `json:"url" `
-	Sort          uint64                `json:"sort" `
-	Children      []*PermissionListInfo `json:"children"`
+	Id        uint64                `json:"id"`
+	Label     string                `json:"label" `
+	Pid       uint64                `json:"pid" `
+	Level     uint8                 `json:"level" `
+	Url       string                `json:"url" `
+	Sort      uint64                `json:"sort" `
+	Component string                `json:"component" `
+	Icon      string                `json:"icon" `
+	Children  []*PermissionListInfo `json:"children"`
 }
 
 //表名
@@ -84,13 +85,14 @@ func (p *PermissionModel) RecursivePermission(pid uint64, plist []*PermissionMod
 	for i := range plist[:] {
 		if pid == plist[i].Pid {
 			cList := &PermissionListInfo{
-				Id:            plist[i].Id,
-				Label:         plist[i].Label,
-				IsContainMenu: plist[i].IsContainMenu,
-				Pid:           plist[i].Pid,
-				Level:         plist[i].Level,
-				Url:           plist[i].Url,
-				Sort:          plist[i].Sort,
+				Id:        plist[i].Id,
+				Label:     plist[i].Label,
+				Pid:       plist[i].Pid,
+				Level:     plist[i].Level,
+				Url:       plist[i].Url,
+				Sort:      plist[i].Sort,
+				Component: plist[i].Component,
+				Icon:      plist[i].Icon,
 			}
 			cList.Children = p.RecursivePermission(plist[i].Id, plist)
 			list = append(list, cList)

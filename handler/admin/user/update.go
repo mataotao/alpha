@@ -33,7 +33,7 @@ func Update(c *gin.Context) {
 		},
 		Name:    r.Name,
 		Mobile:  r.Mobile,
-		HeadImg: r.HeadImg,
+		Avatar: r.Avatar,
 	}
 	if err := service.Update(user, r.RoleIds); err != nil {
 		config.Logger.Error("user update",

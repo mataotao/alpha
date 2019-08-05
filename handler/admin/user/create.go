@@ -30,7 +30,7 @@ func Create(c *gin.Context) {
 		Name:     r.Name,
 		Mobile:   r.Mobile,
 		Password: r.Password,
-		HeadImg:  r.HeadImg,
+		Avatar:  r.Avatar,
 		LastTime: time.Now(),
 		LastIp:   c.ClientIP(),
 		Status:   model.ON,

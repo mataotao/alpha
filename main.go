@@ -6,6 +6,7 @@ import (
 	"alpha/repositories/data-mappers/immt"
 	"alpha/repositories/data-mappers/model"
 	"alpha/router"
+	"alpha/router/middleware"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
@@ -40,6 +41,8 @@ func main() {
 	// Routes.
 	router.Load(
 		g,
+		middleware.Options,
+		middleware.Secure,
 	)
 
 	// Ping the server to make sure the router is working.

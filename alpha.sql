@@ -73,7 +73,7 @@ CREATE TABLE `user` (
   `name` varchar(255) NOT NULL DEFAULT '' COMMENT '姓名',
   `mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '用户手机号',
   `password` varchar(100) NOT NULL DEFAULT '' COMMENT '用户密码',
-  `head_img` varchar(255) NOT NULL DEFAULT '' COMMENT '用户头像',
+  `avatar` varchar(255) NOT NULL DEFAULT '' COMMENT '用户头像',
   `last_time` datetime NOT NULL COMMENT '上次登录时间',
   `last_ip` varchar(20) CHARACTER SET utf8 NOT NULL COMMENT '上次登录ip',
   `is_root` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否为超级管理员1是2否',

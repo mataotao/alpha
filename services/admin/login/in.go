@@ -9,9 +9,9 @@ import (
 )
 
 type InResponse struct {
-	Token   string `json:"token"`
-	Name    string `json:"name"`
-	HeadImg string `json:"head_img"`
+	Token  string `json:"token"`
+	Name   string `json:"name"`
+	Avatar string `json:"avatar"`
 }
 
 func In(username, pwd, ip string) (*InResponse, error) {
@@ -69,7 +69,7 @@ func In(username, pwd, ip string) (*InResponse, error) {
 		return inResponse, err
 	}
 	inResponse.Name = userEntity.UserModel.Name
-	inResponse.HeadImg = userEntity.UserModel.HeadImg
+	inResponse.Avatar = userEntity.UserModel.Avatar
 	inResponse.Token = token
 	return inResponse, nil
 }

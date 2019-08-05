@@ -72,6 +72,8 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		admin.GET("user/:id", user.Get)
 		//获取用户列表
 		admin.GET("user", user.List)
+
+		admin.GET("user-info", user.Information)
 	}
 	// The health check handlers
 	svcd := g.Group("/sd")

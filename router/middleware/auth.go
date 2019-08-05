@@ -15,6 +15,7 @@ import (
 
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		fmt.Println(c.HandlerName())
 		// Parse the json web token.
 		t, err := token.ParseRequest(c)
 		if err != nil {
