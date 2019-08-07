@@ -53,7 +53,6 @@ func Get(uid uint64) (*GetResponse, error) {
 		IsRoot:   userEntity.UserModel.IsRoot,
 		Status:   userEntity.UserModel.Status,
 		RoleIds:  userEntity.RoleIds,
-		Role:     "admin",
 	}
 
 	return getResponse, nil
