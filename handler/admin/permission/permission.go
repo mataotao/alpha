@@ -6,9 +6,9 @@ type CreateRequest struct {
 	Data
 }
 type Data struct {
-	Label     string `json:"label" valid:"required,stringlength(1|10)~菜单名最大长度10"`
+	Label     string `json:"label" valid:"required~请填写菜单名,stringlength(1|10)~菜单名最大长度10"`
 	Sort      uint64 `json:"sort"`
-	Url       string `json:"url" valid:"required,stringlength(1|500)~url最大长度500"`
+	Url       string `json:"url" valid:"stringlength(1|500)~url最大长度500"`
 	Cond      string `json:"cond" valid:"stringlength(1|2000)~条件最大长度2000"`
 	Component string `json:"component" valid:"stringlength(1|2000)~组件最大长度2000"`
 	Icon      string `json:"icon" valid:"stringlength(1|100)~icon最大长度100"`

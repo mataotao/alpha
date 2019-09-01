@@ -3,7 +3,6 @@ package permission
 import (
 	"alpha/config"
 	"alpha/handler"
-	"alpha/pkg/errno"
 	"alpha/repositories/data-mappers/model"
 
 	"github.com/asaskevich/govalidator"
@@ -24,7 +23,7 @@ func Create(c *gin.Context) {
 	//验证
 	if _, err := govalidator.ValidateStruct(&r); err != nil {
 		errMap := govalidator.ErrorsByField(err)
-		handler.SendBadResponseErrors(c, errno.ErrValidation, nil, errMap)
+		handler.SendBadResponseErrors(c, err, nil, errMap)
 		return
 	}
 	//赋值

@@ -16,7 +16,7 @@ func AdminRedisCell() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		k := fmt.Sprintf(AdminRedisCellKey, c.GetInt("user_id"))
 		//CL.THROTTLE <key> <max_burst> <count per period> <period> [<quantity>]
-		res, err := redis.Client.Client.Do("CL.THROTTLE", k, 1, 30, 60).Result()
+		res, err := redis.Client.Client.Do("CL.THROTTLE", k, 15, 30, 60).Result()
 		if err != nil {
 			config.Logger.Error("admin redis-cell",
 				zap.Error(err),
