@@ -3,7 +3,6 @@ package user
 import (
 	"alpha/config"
 	"alpha/handler"
-	"alpha/pkg/errno"
 	"alpha/repositories/data-mappers/model"
 	service "alpha/services/admin/user"
 
@@ -20,7 +19,7 @@ func List(c *gin.Context) {
 	}
 	if _, err := govalidator.ValidateStruct(&r); err != nil {
 		errMap := govalidator.ErrorsByField(err)
-		handler.SendBadResponseErrors(c, errno.ErrValidation, nil, errMap)
+		handler.SendBadResponseErrors(c, err, nil, errMap)
 		return
 	}
 	user := &model.UserModel{

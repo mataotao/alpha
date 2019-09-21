@@ -3,7 +3,6 @@ package role
 import (
 	"alpha/config"
 	"alpha/handler"
-	"alpha/pkg/errno"
 	"alpha/repositories/data-mappers/model"
 
 	"github.com/asaskevich/govalidator"

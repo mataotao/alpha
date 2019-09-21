@@ -6,3 +6,4 @@ docker-compose/
 .DS_Store
 /conf/config.yaml
 /data/immt/*.gob
+/uploads

@@ -120,3 +120,12 @@ func (r *RoleModel) List(field string, page uint64, limit uint64) ([]*RoleModel,
 	return list, count, nil
 
 }
+func (r *RoleModel) All(field string) ([]*RoleModel, error) {
+	list := make([]*RoleModel, 0)
+	db := DB.Alpha.Select(field)
+	if err := db.Order("id desc").Find(&list).Error; err != nil {
+		return list, err
+	}
+	return list, nil
+
+}

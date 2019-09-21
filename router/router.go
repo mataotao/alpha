@@ -6,6 +6,7 @@ import (
 	"alpha/handler/admin/role"
 	"alpha/handler/admin/user"
 	"alpha/handler/global/cache"
+	"alpha/handler/global/upload"
 	"alpha/handler/sd"
 	"alpha/router/middleware"
 	"alpha/router/middleware/limiter"
@@ -29,6 +30,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		c.String(http.StatusNotFound, "The incorrect API route.")
 	})
 	g.POST("/login", login.In)
+	g.POST("/upload", upload.Upload)
 
 	global := g.Group("/global")
 	{
@@ -59,6 +61,8 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		admin.GET("role/:id", role.Get)
 		//获取角色列表
 		admin.GET("role", role.List)
+
+		admin.GET("role-a", role.All)
 
 		//新增用户
 		admin.POST("user", user.Create)
