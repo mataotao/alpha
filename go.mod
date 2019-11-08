@@ -27,6 +27,7 @@ require (
 	github.com/gin-gonic/gin v1.4.0
 	github.com/go-chi/chi v4.0.2+incompatible // indirect
 	github.com/go-redis/redis v6.15.2+incompatible
+	github.com/go-resty/resty/v2 v2.1.0
 	github.com/golang/mock v1.3.1 // indirect
 	github.com/gomodule/redigo v2.0.0+incompatible
 	github.com/google/pprof v0.0.0-20190515194954-54271f7e092f // indirect
@@ -81,7 +82,6 @@ require (
 	golang.org/x/lint v0.0.0-20190409202823-959b441ac422 // indirect
 	golang.org/x/mobile v0.0.0-20190509164839-32b2708ab171 // indirect
 	golang.org/x/mod v0.1.0 // indirect
-	golang.org/x/net v0.0.0-20190603091049-60506f45cf65 // indirect
 	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45 // indirect
 	golang.org/x/sys v0.0.0-20190602015325-4c4f7f33c9ed // indirect
 	golang.org/x/tools v0.0.0-20190606050223-4d9ae51c2468 // indirect

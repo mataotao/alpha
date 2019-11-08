@@ -1,6 +1,6 @@
 package queue
 
-func init(){
+func init() {
 	go func() {
 		weather()
 	}()
