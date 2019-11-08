@@ -8,6 +8,8 @@ import (
 	"alpha/router"
 	"alpha/router/middleware"
 
+	_ "alpha/handler/queue"
+
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
