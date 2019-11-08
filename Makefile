@@ -1,6 +1,6 @@
 server = "alpha"
 .IGNORE:love vet
-all: clean gotool vet
+all: clean gotool
 	@GO111MODULE=on GOPROXY=https://goproxy.io go build -o ${server} -v .
 clean:
 	@rm -f ${server}
