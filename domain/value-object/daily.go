@@ -7,6 +7,7 @@ type DailyStruct struct {
 			Skycon      []dailySkycon      `json:"skycon"`      //全天，主要天气现象
 			ColdRisk    []dailyColdRisk    `json:"coldRisk"`    //全天，感冒指数和自然语言描述
 			Comfort     []dailyColdRisk    `json:"comfort"`     //全天，舒适度指数和自然语言描述
+			Pm25        []dailyTemperature `json:"pm25"`        //PM2.5，最大值，平均值最小值
 		} `json:"daily"`
 	} `json:"result"`
 }

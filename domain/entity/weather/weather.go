@@ -87,11 +87,10 @@ func (e *entity) Content() string {
 		s.WriteString(fmt.Sprintf("天气状况:%s\n", name))
 	}
 	s.WriteString(fmt.Sprintf("舒适度:%s\n", e.RealtimeStruct.Result.Comfort.Desc))
-	s.WriteString(fmt.Sprintf("PM25:%.1f\n", e.RealtimeStruct.Result.Pm25))
+	s.WriteString(fmt.Sprintf("PM2.5:%.1f\n", e.RealtimeStruct.Result.Pm25))
 	s.WriteString("今日天气:\n")
 	if len(e.DailyStruct.Result.Daily.Temperature) > 0 {
-		s.WriteString(fmt.Sprintf("最低温度:%.1f°\n", e.DailyStruct.Result.Daily.Temperature[0].Min))
-		s.WriteString(fmt.Sprintf("最高温度:%.1f°\n", e.DailyStruct.Result.Daily.Temperature[0].Max))
+		s.WriteString(fmt.Sprintf("温度:%.1f°~%.1f°\n", e.DailyStruct.Result.Daily.Temperature[0].Min, e.DailyStruct.Result.Daily.Temperature[0].Max))
 		s.WriteString(fmt.Sprintf("平均温度:%.1f°\n", e.DailyStruct.Result.Daily.Temperature[0].Avg))
 	}
 
@@ -102,6 +101,10 @@ func (e *entity) Content() string {
 	}
 	if len(e.DailyStruct.Result.Daily.Comfort) > 0 {
 		s.WriteString(fmt.Sprintf("舒适度:%s\n", e.DailyStruct.Result.Daily.Comfort[0].Desc))
+	}
+	if len(e.DailyStruct.Result.Daily.Pm25) > 0 {
+		s.WriteString(fmt.Sprintf("pm2.5:%.1f~%.1f\n", e.DailyStruct.Result.Daily.Pm25[0].Min, e.DailyStruct.Result.Daily.Pm25[0].Max))
+		s.WriteString(fmt.Sprintf("平均pm2.5:%.1f\n", e.DailyStruct.Result.Daily.Pm25[0].Avg))
 	}
 	if len(e.DailyStruct.Result.Daily.ColdRisk) > 0 {
 		s.WriteString(fmt.Sprintf("感冒指数:%s\n", e.DailyStruct.Result.Daily.ColdRisk[0].Desc))
